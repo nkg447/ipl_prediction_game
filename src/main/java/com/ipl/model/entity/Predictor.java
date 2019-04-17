@@ -4,30 +4,24 @@ import com.ipl.dao.PredictorDAO;
 
 public class Predictor {
 	private String name;
-	private String authenticationId;
+	private int authenticationId;
 	private int score;
 
-	public Predictor(String name, String authenticationId, int score) {
+	public Predictor(String name, int authenticationId, int score) {
 		this.name = name;
 		this.authenticationId = authenticationId;
 		this.score = score;
 	}
 
-	public Predictor(String name, boolean autoCreateAuthId, int score) {
-		this.name = name;
-		this.authenticationId = (autoCreateAuthId)? autoGenerateId() : "";
-		this.score = score;
-	}
-
 	private static String autoGenerateId() {
-		return String.valueOf(PredictorDAO.getAllPredictors().size()+1);
+		return String.valueOf(PredictorDAO.getAllPredictors().size() + 1);
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public String getAuthenticationId() {
+	public int getAuthenticationId() {
 		return authenticationId;
 	}
 

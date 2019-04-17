@@ -1,14 +1,14 @@
 package com.ipl.model.entity;
 
 public class Question {
-	private String id;
+	private int id;
 	private String question;
 	private String date;
 	private String options;
 	private String type;
 	private int points;
 
-	public Question(String id, String question, String date, String options, String type, int points) {
+	public Question(int id, String question, String date, String options, String type, int points) {
 		this.id = id;
 		this.question = question;
 		this.date = date;
@@ -17,7 +17,7 @@ public class Question {
 		this.points = points;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 

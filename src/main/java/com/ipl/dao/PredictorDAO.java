@@ -1,10 +1,10 @@
 package com.ipl.dao;
 
-import com.ipl.model.entity.Authentication;
-import com.ipl.model.entity.Predictor;
 import com.ipl.dao.sql.DatabaseInfo;
 import com.ipl.dao.sql.Query;
 import com.ipl.dao.sql.Update;
+import com.ipl.model.entity.Authentication;
+import com.ipl.model.entity.Predictor;
 import org.apache.log4j.Logger;
 
 import java.sql.ResultSet;
@@ -18,7 +18,7 @@ public class PredictorDAO {
 
 	public static void save(Predictor predictor) {
 		String query = "INSERT INTO " + DatabaseInfo.PREDICTOR + " VALUES(" +
-				"'" + predictor.getAuthenticationId() + "'," +
+				predictor.getAuthenticationId() + "," +
 				"'" + predictor.getName() + "'," +
 				"" + predictor.getScore() + ")";
 		Update.executeQuery(query);
@@ -43,7 +43,7 @@ public class PredictorDAO {
 			while (rs.next()) {
 				predictors.add(new Predictor(
 						rs.getString("NAME"),
-						rs.getString("AUTHENTICATION_ID"),
+						rs.getInt("AUTHENTICATION_ID"),
 						rs.getInt("SCORE")
 				));
 			}
@@ -63,7 +63,7 @@ public class PredictorDAO {
 		return getPredictorByAuthId(auth.getId());
 	}
 
-	private static Predictor getPredictorByAuthId(String id) {
+	private static Predictor getPredictorByAuthId(int id) {
 		return getAllPredictors("WHERE AUTHENTICATION_ID='" + id + "'").remove(0);
 	}
 }

@@ -7,12 +7,15 @@ import com.google.gson.JsonParser;
 import com.ipl.Util;
 import com.ipl.service.data.APIEndpoint;
 import com.ipl.service.data.MatchDetail;
+import com.ipl.service.data.Player;
+import com.ipl.service.data.Team;
 import com.ipl.service.data.matchsummary.MatchSummary;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimerTask;
+import java.util.stream.Stream;
 
 public class ServiceData extends TimerTask {
 
@@ -66,6 +69,27 @@ public class ServiceData extends TimerTask {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public static String playerDetailsJson(String date) {
+		MatchDetail matchDetail = ServiceData.getMatchDetail(date);
+		JsonArray players = new JsonArray();
+		Stream.concat(matchDetail.getSquad().get(0).getPlayers().stream(),
+				matchDetail.getSquad().get(1).getPlayers().stream())
+				.map(Player::getName)
+				.sorted()
+				.forEach(players::add);
+
+		return players.toString();
+	}
+
+	public static String teamNamesJson(String date) {
+		MatchDetail matchDetail = ServiceData.getMatchDetail(date);
+		JsonArray teams = new JsonArray();
+		matchDetail.getSquad().stream()
+				.map(Team::getName)
+				.forEach(teams::add);
+		return teams.toString();
 	}
 
 	@Override

@@ -1,9 +1,9 @@
 package com.ipl.dao;
 
-import com.ipl.model.entity.Question;
 import com.ipl.dao.sql.DatabaseInfo;
 import com.ipl.dao.sql.Query;
 import com.ipl.dao.sql.Update;
+import com.ipl.model.entity.Question;
 import org.apache.log4j.Logger;
 
 import java.sql.ResultSet;
@@ -15,8 +15,8 @@ public class QuestionDAO {
 	private final static Logger logger = Logger.getLogger(QuestionDAO.class);
 
 	public static void save(Question question) {
-		String query = "REPLACE INTO " + DatabaseInfo.QUESTION + " VALUES(" +
-				"'" + question.getId() + "'," +
+		String query = "REPLACE INTO " + DatabaseInfo.QUESTION
+				+ "(QUESTION, DATE, OPTIONS, TYPE, POINTS) VALUES(" +
 				"'" + question.getQuestion() + "'," +
 				"'" + question.getDate() + "'," +
 				"'" + question.getOptions() + "'," +
@@ -26,7 +26,7 @@ public class QuestionDAO {
 	}
 
 	public static void createTable() {
-		String query = "CREATE TABLE \""+DatabaseInfo.QUESTION+"\" (\n" +
+		String query = "CREATE TABLE \"" + DatabaseInfo.QUESTION + "\" (\n" +
 				"\t\"ID\"\tTEXT NOT NULL UNIQUE,\n" +
 				"\t\"QUESTION\"\tTEXT NOT NULL,\n" +
 				"\t\"DATE\"\tTEXT NOT NULL,\n" +
@@ -46,7 +46,7 @@ public class QuestionDAO {
 
 			while (rs.next()) {
 				questions.add(new Question(
-						rs.getString("ID"),
+						rs.getInt("ID"),
 						rs.getString("QUESTION"),
 						rs.getString("DATE"),
 						rs.getString("OPTIONS"),

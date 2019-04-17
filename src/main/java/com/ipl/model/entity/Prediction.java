@@ -1,17 +1,17 @@
 package com.ipl.model.entity;
 
 public class Prediction {
-	private String id;
+	private int id;
 	private String email;
 	private String date;
 
-	public Prediction(String id, String email, String date) {
+	public Prediction(int id, String email, String date) {
 		this.id = id;
 		this.email = email;
 		this.date = date;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 

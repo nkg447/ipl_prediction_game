@@ -1,9 +1,9 @@
 package com.ipl.dao;
 
-import com.ipl.model.entity.Prediction;
 import com.ipl.dao.sql.DatabaseInfo;
 import com.ipl.dao.sql.Query;
 import com.ipl.dao.sql.Update;
+import com.ipl.model.entity.Prediction;
 import org.apache.log4j.Logger;
 
 import java.sql.ResultSet;
@@ -15,8 +15,8 @@ public class PredictionDAO {
 	private final static Logger logger = Logger.getLogger(PredictionDAO.class);
 
 	public static void save(Prediction prediction) {
-		String query = "REPLACE INTO " + DatabaseInfo.PREDICTION + " VALUES(" +
-				"'" + prediction.getId() + "'," +
+		String query = "REPLACE INTO " + DatabaseInfo.PREDICTION
+				+ "(EMAIL, DATE) VALUES(" +
 				"'" + prediction.getEmail() + "'," +
 				"'" + prediction.getDate() + "')";
 		Update.executeQuery(query);
@@ -24,10 +24,9 @@ public class PredictionDAO {
 
 	public static void createTable() {
 		String query = "CREATE TABLE \"" + DatabaseInfo.PREDICTION + "\" (\n" +
-				"\t\"ID\"\tTEXT NOT NULL UNIQUE,\n" +
+				"\t\"ID\"\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
 				"\t\"EMAIL\"\tTEXT NOT NULL,\n" +
-				"\t\"DATE\"\tTEXT NOT NULL,\n" +
-				"\tPRIMARY KEY(\"ID\")\n" +
+				"\t\"DATE\"\tTEXT NOT NULL\n" +
 				");";
 		Update.executeQuery(query);
 	}
@@ -40,7 +39,7 @@ public class PredictionDAO {
 
 			while (rs.next()) {
 				predictions.add(new Prediction(
-						rs.getString("ID"),
+						rs.getInt("ID"),
 						rs.getString("EMAIL"),
 						rs.getString("DATE")
 				));

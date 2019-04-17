@@ -1,23 +1,23 @@
 package com.ipl.model.entity;
 
 public class Answer {
-	private String id;
-	private String predictionId;
+	private int id;
+	private int predictionId;
 	private String answer;
-	private String questionId;
+	private int questionId;
 
-	public Answer(String id, String predictionId, String answer, String questionId) {
+	public Answer(int id, int predictionId, String answer, int questionId) {
 		this.id = id;
 		this.predictionId = predictionId;
 		this.answer = answer;
 		this.questionId = questionId;
 	}
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public String getPredictionId() {
+	public int getPredictionId() {
 		return predictionId;
 	}
 
@@ -25,7 +25,7 @@ public class Answer {
 		return answer;
 	}
 
-	public String getQuestionId() {
+	public int getQuestionId() {
 		return questionId;
 	}
 }
