@@ -10,18 +10,19 @@ import java.util.List;
 
 public class Service {
 	public static void register(RegisterForm registerForm) {
-		Predictor predictor = new Predictor(
-				registerForm.getName(),
-				0,
-				0
-		);
 		Authentication authentication = new Authentication(
-				predictor.getAuthenticationId(),
+				0,
 				registerForm.getEmail(),
 				ServiceUtil.hashOf(registerForm.getPassword())
 		);
-		PredictorDAO.save(predictor);
 		AuthenticationDAO.save(authentication);
+		authentication = AuthenticationDAO.getAuthenticationByEmail(registerForm.getEmail());
+		Predictor predictor = new Predictor(
+				registerForm.getName(),
+				authentication.getId(),
+				0
+		);
+		PredictorDAO.save(predictor);
 	}
 
 	public static boolean authenticate(String email, String password) {
