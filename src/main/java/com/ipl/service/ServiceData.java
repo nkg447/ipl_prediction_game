@@ -5,6 +5,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ipl.Util;
+import com.ipl.dao.QuestionDAO;
+import com.ipl.model.entity.Question;
 import com.ipl.service.data.APIEndpoint;
 import com.ipl.service.data.MatchDetail;
 import com.ipl.service.data.Player;
@@ -92,8 +94,36 @@ public class ServiceData extends TimerTask {
 		return teams.toString();
 	}
 
+	public static void addQuestions() {
+		String playersOption = playerDetailsJson(Util.todayDateString());
+		QuestionDAO.save(new Question(
+				0,
+				"Player to make most runs",
+				Util.todayDateString(),
+				playersOption,
+				"MULTIPLE _CHOICE",
+				10
+		));
+		QuestionDAO.save(new Question(
+				0,
+				"Player to make most wickets",
+				Util.todayDateString(),
+				playersOption,
+				"MULTIPLE _CHOICE",
+				10
+		));
+		QuestionDAO.save(new Question(
+				0,
+				"Man of the Match",
+				Util.todayDateString(),
+				playersOption,
+				"MULTIPLE _CHOICE",
+				10
+		));
+	}
+
 	@Override
 	public void run() {
-
+		addQuestions();
 	}
 }

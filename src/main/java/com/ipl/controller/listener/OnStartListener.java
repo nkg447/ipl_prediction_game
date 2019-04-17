@@ -2,6 +2,7 @@ package com.ipl.controller.listener;
 
 import com.ipl.dao.*;
 import com.ipl.dao.sql.DatabaseConnection;
+import com.ipl.service.ServiceData;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -26,6 +27,7 @@ public class OnStartListener implements ServletContextListener,
 		ServletContext context=sce.getServletContext();
 		createDatabaseConnection(context);
 		createTables();
+		new ServiceData().run();
 	}
 
 	private void createTables() {

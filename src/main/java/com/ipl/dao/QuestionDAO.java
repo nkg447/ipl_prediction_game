@@ -27,13 +27,12 @@ public class QuestionDAO {
 
 	public static void createTable() {
 		String query = "CREATE TABLE \"" + DatabaseInfo.QUESTION + "\" (\n" +
-				"\t\"ID\"\tTEXT NOT NULL UNIQUE,\n" +
+				"\t\"ID\"\tINTEGER PRIMARY KEY AUTOINCREMENT,\n" +
 				"\t\"QUESTION\"\tTEXT NOT NULL,\n" +
 				"\t\"DATE\"\tTEXT NOT NULL,\n" +
 				"\t\"OPTIONS\"\tTEXT,\n" +
 				"\t\"TYPE\"\tTEXT NOT NULL,\n" +
-				"\t\"POINTS\"\tINTEGER NOT NULL,\n" +
-				"\tPRIMARY KEY(\"ID\")\n" +
+				"\t\"POINTS\"\tINTEGER NOT NULL\n" +
 				");";
 		Update.executeQuery(query);
 	}
