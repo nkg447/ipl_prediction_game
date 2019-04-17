@@ -1,4 +1,4 @@
-package com.ipl.controller;
+package com.ipl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

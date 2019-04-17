@@ -1,4 +1,4 @@
-package com.ipl.controller.data;
+package com.ipl.service.data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

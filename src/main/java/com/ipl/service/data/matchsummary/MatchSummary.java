@@ -1,4 +1,4 @@
-package com.ipl.controller.data.matchsummary;
+package com.ipl.service.data.matchsummary;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

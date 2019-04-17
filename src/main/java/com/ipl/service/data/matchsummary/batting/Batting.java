@@ -1,19 +1,19 @@
-package com.ipl.controller.data.matchsummary.bowling;
+package com.ipl.service.data.matchsummary.batting;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Bowling {
-	private Set<BowlingScore> scores;
+public class Batting {
+	private Set<BattingScore> scores;
 	private String title;
 
-	public Set<BowlingScore> getScores() {
+	public Set<BattingScore> getScores() {
 		return scores;
 	}
 
-	public void setScores(Set<BowlingScore> scores) {
+	public void setScores(Set<BattingScore> scores) {
 		this.scores = scores;
 	}
 
@@ -27,7 +27,7 @@ public class Bowling {
 
 	@Override
 	public String toString() {
-		return "Bowling{" +
+		return "Batting{" +
 				"scores=" + scores +
 				", title='" + title + '\'' +
 				"}\n";
