@@ -1,12 +1,10 @@
 package com.ipl.service;
 
+import com.ipl.Util;
+import com.ipl.controller.form.PredictionForm;
 import com.ipl.controller.form.RegisterForm;
-import com.ipl.dao.AuthenticationDAO;
-import com.ipl.dao.PredictorDAO;
-import com.ipl.dao.QuestionDAO;
-import com.ipl.model.entity.Authentication;
-import com.ipl.model.entity.Predictor;
-import com.ipl.model.entity.Question;
+import com.ipl.dao.*;
+import com.ipl.model.entity.*;
 
 import java.util.List;
 
@@ -35,5 +33,24 @@ public class Service {
 	public static List<Question> getQuestions(String date) {
 		List<Question> questions = QuestionDAO.getQuestionsByDate(date);
 		return questions;
+	}
+
+	public static void predict(PredictionForm form, String email) {
+		Prediction prediction = new Prediction(
+				0,
+				email,
+				Util.todayDateString()
+		);
+		PredictionDAO.save(prediction);
+		prediction = PredictionDAO.getPredictionsByDateAndEmail(Util.todayDateString(), email);
+		int pid = prediction.getId();
+		form.getPredictions().stream()
+				.map((p) -> new Answer(
+						0,
+						pid,
+						p.getAnswer(),
+						p.getQuestionId()
+				))
+				.forEach(AnswerDAO::save);
 	}
 }

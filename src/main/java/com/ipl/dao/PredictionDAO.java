@@ -63,6 +63,10 @@ public class PredictionDAO {
 		return getAllPredictions("WHERE DATE='" + date + "'");
 	}
 
+	public static Prediction getPredictionsByDateAndEmail(String date, String email) {
+		return getAllPredictions("WHERE DATE='" + date + "' AND EMAIL='" + email + "'").remove(0);
+	}
+
 	public static Prediction getPredictionById(String id) {
 		return getAllPredictions("WHERE ID='" + id + "'").remove(0);
 	}

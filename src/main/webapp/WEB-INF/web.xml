@@ -28,6 +28,10 @@
         <servlet-name>QuestionsServlet</servlet-name>
         <servlet-class>com.ipl.controller.servlet.QuestionsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PredictionServlet</servlet-name>
+        <servlet-class>com.ipl.controller.servlet.PredictionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -43,6 +47,10 @@
     <servlet-mapping>
         <servlet-name>QuestionsServlet</servlet-name>
         <url-pattern>/questions</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PredictionServlet</servlet-name>
+        <url-pattern>/prediction</url-pattern>
     </servlet-mapping>
 
 </web-app>
