@@ -98,6 +98,14 @@ public class ServiceData extends TimerTask {
 		String playersOption = playerDetailsJson(Util.todayDateString());
 		QuestionDAO.save(new Question(
 				0,
+				"wining team",
+				Util.todayDateString(),
+				teamNamesJson(Util.todayDateString()),
+				"MULTIPLE _CHOICE",
+				10
+		));
+		QuestionDAO.save(new Question(
+				0,
 				"Player to make most runs",
 				Util.todayDateString(),
 				playersOption,
