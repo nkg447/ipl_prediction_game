@@ -5,25 +5,32 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ipl.Util;
+import com.ipl.dao.AnswerDAO;
+import com.ipl.dao.PredictionDAO;
+import com.ipl.dao.PredictorDAO;
 import com.ipl.dao.QuestionDAO;
+import com.ipl.model.entity.Answer;
+import com.ipl.model.entity.Prediction;
+import com.ipl.model.entity.Predictor;
 import com.ipl.model.entity.Question;
-import com.ipl.service.data.APIEndpoint;
-import com.ipl.service.data.MatchDetail;
-import com.ipl.service.data.Player;
-import com.ipl.service.data.Team;
-import com.ipl.service.data.matchsummary.MatchSummary;
+import com.ipl.service.dto.APIEndpoint;
+import com.ipl.service.dto.MatchDetail;
+import com.ipl.service.dto.Player;
+import com.ipl.service.dto.Team;
+import com.ipl.service.dto.matchsummary.MatchSummary;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class ServiceData extends TimerTask {
 
+	final static Logger logger = Logger.getLogger(ServiceData.class);
 	private static Map<String, MatchDetail> matchDetailMap = new HashMap<>();
 	private static Map<String, MatchSummary> matchSummaryMap = new HashMap<>();
 	private static Map<String, String> dateToUniqueIdMap = new HashMap<>();
+	private static Set<String> datesScoreUpdated = new HashSet<>();
 	private static JsonParser PARSER = new JsonParser();
 
 	public static MatchDetail getMatchDetail(String date) {
@@ -98,6 +105,14 @@ public class ServiceData extends TimerTask {
 		String playersOption = playerDetailsJson(Util.todayDateString());
 		QuestionDAO.save(new Question(
 				0,
+				"wining team",
+				Util.todayDateString(),
+				teamNamesJson(Util.todayDateString()),
+				"MULTIPLE _CHOICE",
+				10
+		));
+		QuestionDAO.save(new Question(
+				0,
 				"Player to make most runs",
 				Util.todayDateString(),
 				playersOption,
@@ -120,6 +135,45 @@ public class ServiceData extends TimerTask {
 				"MULTIPLE _CHOICE",
 				10
 		));
+	}
+
+	public static void updateScores(String date) {
+		if (!datesScoreUpdated.contains(date)) {
+			Prediction correctPrediction = PredictionDAO.getPredictionsByDateAndEmail(date, Predictor.ADMIN_EMAIL);
+			List<Answer> correctAnswers = AnswerDAO.getAnswersByPredictionId(correctPrediction.getId());
+			List<Question> questions = QuestionDAO.getQuestionsByDate(date);
+			List<Prediction> predictions = PredictionDAO.getPredictionsByDate(date);
+
+			predictions.forEach(prediction -> {
+				int points = answersToPints(
+						questions,
+						correctAnswers,
+						AnswerDAO.getAnswersByPredictionId(prediction.getId())
+				);
+				PredictorDAO.updateScore(prediction.getEmail(), points);
+			});
+		}
+	}
+
+	private static int answersToPints(List<Question> questions, List<Answer> correctAnswers, List<Answer> answers) {
+		return answers.stream()
+				.map(answer -> answerToPoints(questions, correctAnswers, answer))
+				.reduce((a, b) -> {
+					System.out.println(a + " " + b);
+					return a + b;
+				}).get();
+	}
+
+	private static int answerToPoints(List<Question> questions, List<Answer> correctAnswers, Answer answer) {
+		Answer correctAnswer = correctAnswers.stream()
+				.filter(ans -> ans.getQuestionId() == answer.getQuestionId())
+				.findFirst().get();
+		JsonArray answerJson = (JsonArray) PARSER.parse(correctAnswer.getAnswerValue());
+		for (JsonElement el : answerJson) {
+			if (el.getAsString().equals(answer.getAnswerValue()))
+				return QuestionDAO.getQuestionById(answer.getQuestionId()).getPoints();
+		}
+		return 0;
 	}
 
 	@Override

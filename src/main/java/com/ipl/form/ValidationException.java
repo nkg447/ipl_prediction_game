@@ -1,4 +1,4 @@
-package com.ipl.controller.form;
+package com.ipl.form;
 
 public class ValidationException extends Exception {
 	// entity in which the validation exception occurred.

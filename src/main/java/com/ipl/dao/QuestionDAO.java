@@ -1,8 +1,8 @@
 package com.ipl.dao;
 
-import com.ipl.dao.sql.DatabaseInfo;
-import com.ipl.dao.sql.Query;
-import com.ipl.dao.sql.Update;
+import com.ipl.dao.util.DatabaseInfo;
+import com.ipl.dao.util.Query;
+import com.ipl.dao.util.Update;
 import com.ipl.model.entity.Question;
 import org.apache.log4j.Logger;
 
@@ -68,7 +68,7 @@ public class QuestionDAO {
 		return getAllQuestions("WHERE DATE='" + date + "'");
 	}
 
-	public static Question getQuestionById(String id) {
-		return getAllQuestions("WHERE ID='" + id + "'").remove(0);
+	public static Question getQuestionById(int id) {
+		return getAllQuestions("WHERE ID=" + id).remove(0);
 	}
 }

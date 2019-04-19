@@ -1,4 +1,4 @@
-package com.ipl.dao.sql;
+package com.ipl.dao.util;
 
 import org.apache.log4j.Logger;
 

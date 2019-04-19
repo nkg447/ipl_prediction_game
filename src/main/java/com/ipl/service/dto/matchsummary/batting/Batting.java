@@ -1,4 +1,4 @@
-package com.ipl.service.data.matchsummary.batting;
+package com.ipl.service.dto.matchsummary.batting;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

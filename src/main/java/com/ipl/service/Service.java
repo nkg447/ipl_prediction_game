@@ -1,27 +1,28 @@
 package com.ipl.service;
 
 import com.ipl.Util;
-import com.ipl.controller.form.PredictionForm;
-import com.ipl.controller.form.RegisterForm;
 import com.ipl.dao.*;
+import com.ipl.form.PredictionForm;
+import com.ipl.form.RegisterForm;
 import com.ipl.model.entity.*;
 
 import java.util.List;
 
 public class Service {
 	public static void register(RegisterForm registerForm) {
-		Predictor predictor = new Predictor(
-				registerForm.getName(),
-				0,
-				0
-		);
 		Authentication authentication = new Authentication(
-				predictor.getAuthenticationId(),
+				0,
 				registerForm.getEmail(),
 				ServiceUtil.hashOf(registerForm.getPassword())
 		);
-		PredictorDAO.save(predictor);
 		AuthenticationDAO.save(authentication);
+		authentication = AuthenticationDAO.getAuthenticationByEmail(registerForm.getEmail());
+		Predictor predictor = new Predictor(
+				registerForm.getName(),
+				authentication.getId(),
+				0
+		);
+		PredictorDAO.save(predictor);
 	}
 
 	public static boolean authenticate(String email, String password) {
@@ -52,5 +53,8 @@ public class Service {
 						p.getQuestionId()
 				))
 				.forEach(AnswerDAO::save);
+		if (email.equals(Predictor.ADMIN_EMAIL)) {
+			ServiceData.updateScores(Util.todayDateString());
+		}
 	}
 }

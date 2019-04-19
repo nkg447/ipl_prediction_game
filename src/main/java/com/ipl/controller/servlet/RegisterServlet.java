@@ -1,8 +1,8 @@
 package com.ipl.controller.servlet;
 
 import com.google.gson.JsonObject;
-import com.ipl.controller.form.RegisterForm;
-import com.ipl.controller.form.ValidationException;
+import com.ipl.form.RegisterForm;
+import com.ipl.form.ValidationException;
 import com.ipl.service.Service;
 import org.apache.log4j.Logger;
 
@@ -21,18 +21,18 @@ public class RegisterServlet extends HttpServlet {
 				request.getParameter("email"),
 				request.getParameter("password")
 		);
-
+		Response responseDate = new Response();
 		JsonObject jsonObject = new JsonObject();
 		try {
 			registerForm.validate();
 			Service.register(registerForm);
 			jsonObject.addProperty("email", registerForm.getEmail());
 			jsonObject.addProperty("registered", true);
-
+			responseDate.setData(jsonObject);
 		} catch (ValidationException e) {
-			jsonObject.addProperty("error", "invalid data");
+			responseDate.setError(e.getMessage());
 		}
-		response.getWriter().println(jsonObject);
+		response.getWriter().println(responseDate.toJsonObject());
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

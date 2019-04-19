@@ -1,8 +1,8 @@
 package com.ipl.dao;
 
-import com.ipl.dao.sql.DatabaseInfo;
-import com.ipl.dao.sql.Query;
-import com.ipl.dao.sql.Update;
+import com.ipl.dao.util.DatabaseInfo;
+import com.ipl.dao.util.Query;
+import com.ipl.dao.util.Update;
 import com.ipl.model.entity.Authentication;
 import org.apache.log4j.Logger;
 
@@ -58,5 +58,9 @@ public class AuthenticationDAO {
 
 	public static Authentication getAuthenticationByEmail(String email) {
 		return getAllAuthentications("WHERE EMAIL='" + email + "'").remove(0);
+	}
+
+	public static Authentication getAuthenticationById(int id) {
+		return getAllAuthentications("WHERE ID=" + id).remove(0);
 	}
 }

@@ -1,8 +1,8 @@
 package com.ipl.controller.servlet;
 
 import com.google.gson.JsonObject;
-import com.ipl.controller.form.LoginForm;
-import com.ipl.controller.form.ValidationException;
+import com.ipl.form.LoginForm;
+import com.ipl.form.ValidationException;
 import com.ipl.service.Service;
 
 import javax.servlet.ServletException;
@@ -16,6 +16,7 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LoginForm form = new LoginForm(request.getParameter("email"),
 				request.getParameter("password"));
+		Response responseData = new Response();
 		JsonObject jsonObject = new JsonObject();
 		boolean authenticated = false;
 		try {
@@ -26,12 +27,13 @@ public class LoginServlet extends HttpServlet {
 				session.setAttribute("email", form.getEmail());
 			}
 		} catch (ValidationException e) {
-			jsonObject.addProperty("error", "invalid data");
+			responseData.setError("invalid dto");
 		} catch (Exception e) {
-			jsonObject.addProperty("error", e.getMessage());
+			responseData.setError(e.getMessage());
 		}
 		jsonObject.addProperty("authenticated", authenticated);
-		response.getWriter().println(jsonObject);
+		responseData.setData(jsonObject);
+		response.getWriter().println(responseData.toJsonObject());
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

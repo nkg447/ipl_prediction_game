@@ -1,4 +1,4 @@
-package com.ipl.service.data;
+package com.ipl.service.dto;
 
 public class APIEndpoint {
 	private static final String API_KEY = "74hnsEzSSdRDe7Et6egryqi7Hqm1";

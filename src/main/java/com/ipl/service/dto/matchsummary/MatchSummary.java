@@ -1,4 +1,4 @@
-package com.ipl.service.data.matchsummary;
+package com.ipl.service.dto.matchsummary;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -37,7 +37,7 @@ public class MatchSummary {
 	public String toString() {
 		return "MatchSummary{" +
 				"dateTimeGMT='" + dateTimeGMT + '\'' +
-				", data=" + data +
+				", dto=" + data +
 				", type='" + type + '\'' +
 				"}\n";
 	}

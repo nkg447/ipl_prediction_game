@@ -1,26 +1,26 @@
-package com.ipl.dao.sql;
+package com.ipl.dao.util;
 
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
-public class Update {
+public class Query {
 	private final static Logger logger = Logger.getLogger(Query.class);
 
-	public static void execute(final String query) throws SQLException {
+	public static ResultSet execute(String query) throws SQLException {
 		Connection connection = DatabaseConnection.getConnection();
 		Statement statement = connection.createStatement();
 		logger.info("executing query - " + query);
-		statement.execute(query);
+		ResultSet resultSet = statement.executeQuery(query);
+		return resultSet;
 	}
 
-	public static void executeQuery(String query){
+	public static ResultSet executeQuery(String query){
 		try {
-			Update.execute(query);
+			return Query.execute(query);
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
 		}
+		return null;
 	}
 }

@@ -1,8 +1,8 @@
 package com.ipl.dao;
 
-import com.ipl.dao.sql.DatabaseInfo;
-import com.ipl.dao.sql.Query;
-import com.ipl.dao.sql.Update;
+import com.ipl.dao.util.DatabaseInfo;
+import com.ipl.dao.util.Query;
+import com.ipl.dao.util.Update;
 import com.ipl.model.entity.Authentication;
 import com.ipl.model.entity.Predictor;
 import org.apache.log4j.Logger;
@@ -18,7 +18,14 @@ public class PredictorDAO {
 
 	public static void save(Predictor predictor) {
 		String query = "INSERT INTO " + DatabaseInfo.PREDICTOR + " VALUES(" +
-				predictor.getAuthenticationId() + "," +
+				predictor.getAuthentication().getId() + "," +
+				"'" + predictor.getName() + "'," +
+				"" + predictor.getScore() + ")";
+		Update.executeQuery(query);
+	}
+	public static void update(Predictor predictor) {
+		String query = "REPLACE INTO " + DatabaseInfo.PREDICTOR + " VALUES(" +
+				predictor.getAuthentication().getId() + "," +
 				"'" + predictor.getName() + "'," +
 				"" + predictor.getScore() + ")";
 		Update.executeQuery(query);
@@ -65,5 +72,11 @@ public class PredictorDAO {
 
 	private static Predictor getPredictorByAuthId(int id) {
 		return getAllPredictors("WHERE AUTHENTICATION_ID='" + id + "'").remove(0);
+	}
+
+	public static void updateScore(String email, int points) {
+		Predictor predictor = getPredictorByEmail(email);
+		predictor.setScore(predictor.getScore() + points);
+		PredictorDAO.update(predictor);
 	}
 }
