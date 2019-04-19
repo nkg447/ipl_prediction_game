@@ -29,7 +29,11 @@ public class PredictionServlet extends HttpServlet {
 		if ((session = ServletUtil.sessionAvailable(request, responseData)) != null) {
 			JsonObject jsonObject = new JsonObject();
 			PredictionForm form = getForm(request);
-			Service.predict(form, (String) session.getAttribute("email"));
+			try {
+				Service.predict(form, (String) session.getAttribute("email"));
+			} catch (Exception e) {
+				responseData.setError(e.getMessage());
+			}
 			responseData.setStatus(Response.SUCCESS);
 		}
 		response.getWriter().println(responseData.toJsonObject());

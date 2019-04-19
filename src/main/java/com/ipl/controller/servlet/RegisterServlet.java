@@ -31,6 +31,8 @@ public class RegisterServlet extends HttpServlet {
 			responseDate.setData(jsonObject);
 		} catch (ValidationException e) {
 			responseDate.setError(e.getMessage());
+		} catch (Exception e) {
+			responseDate.setError(e.getMessage());
 		}
 		response.getWriter().println(responseDate.toJsonObject());
 	}

@@ -4,22 +4,41 @@ import com.ipl.dao.AuthenticationDAO;
 
 public class Predictor {
 	public static final String ADMIN_EMAIL = "admin@admin";
-	private String name;
-	private Authentication authentication;
-	private int score;
 
-	public Predictor(String name, int authenticationId, int score) {
-		this.name = name;
+	private int id;
+	private Authentication authentication;
+	private String name;
+	private String tlm;
+	private int score;
+	private Status status;
+
+	public Predictor(int authenticationId, String name) {
+		this(0, authenticationId, name, "", 0, Status.ACTIVE);
+	}
+
+	public Predictor(int id, int authenticationId, String name, String tlm, int score, Status status) {
+		this.id = id;
 		this.authentication = AuthenticationDAO.getAuthenticationById(authenticationId);
+		this.name = name;
+		this.tlm = tlm;
 		this.score = score;
+		this.status = status;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public Authentication getAuthentication() {
+		return authentication;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public Authentication getAuthentication() {
-		return authentication;
+	public String getTlm() {
+		return tlm;
 	}
 
 	public int getScore() {
@@ -30,11 +49,7 @@ public class Predictor {
 		this.score = score;
 	}
 
-	@Override
-	public String toString() {
-		return "Predictor{" +
-				"name='" + name + '\'' +
-				", authId='" + authentication + '\'' +
-				'}';
+	public Status getStatus() {
+		return status;
 	}
 }

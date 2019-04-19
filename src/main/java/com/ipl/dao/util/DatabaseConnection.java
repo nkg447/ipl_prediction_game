@@ -13,12 +13,9 @@ public class DatabaseConnection {
 	private static Connection createConnection(String db_path) {
 		Connection conn = null;
 		try {
-			// db parameters
-			String url = "jdbc:sqlite:" + db_path;
-
-			Class.forName("org.sqlite.JDBC");
-			// create a connection to the database
-			conn = DriverManager.getConnection(url);
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/ipl?user=root");
 			logger.info("Connection to SQLite has been established.");
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
@@ -29,15 +26,15 @@ public class DatabaseConnection {
 		return conn;
 	}
 
-	public static Connection getConnection(String db_path){
-		if(CONNECTION_INSTANCE==null){
+	public static Connection getConnection(String db_path) {
+		if (CONNECTION_INSTANCE == null) {
 			CONNECTION_INSTANCE = createConnection(db_path);
 		}
 		return CONNECTION_INSTANCE;
 	}
 
-	public static Connection getConnection(){
-		if(CONNECTION_INSTANCE==null){
+	public static Connection getConnection() {
+		if (CONNECTION_INSTANCE == null) {
 			CONNECTION_INSTANCE = createConnection("");
 		}
 		return CONNECTION_INSTANCE;

@@ -9,10 +9,7 @@ import com.ipl.dao.AnswerDAO;
 import com.ipl.dao.PredictionDAO;
 import com.ipl.dao.PredictorDAO;
 import com.ipl.dao.QuestionDAO;
-import com.ipl.model.entity.Answer;
-import com.ipl.model.entity.Prediction;
-import com.ipl.model.entity.Predictor;
-import com.ipl.model.entity.Question;
+import com.ipl.model.entity.*;
 import com.ipl.service.dto.APIEndpoint;
 import com.ipl.service.dto.MatchDetail;
 import com.ipl.service.dto.Player;
@@ -21,6 +18,7 @@ import com.ipl.service.dto.matchsummary.MatchSummary;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -101,57 +99,56 @@ public class ServiceData extends TimerTask {
 		return teams.toString();
 	}
 
-	public static void addQuestions() {
+	public static void addQuestions() throws SQLException {
 		String playersOption = playerDetailsJson(Util.todayDateString());
 		QuestionDAO.save(new Question(
-				0,
 				"wining team",
 				Util.todayDateString(),
 				teamNamesJson(Util.todayDateString()),
-				"MULTIPLE _CHOICE",
+				QuestionType.MULTIPLE_CHOICE,
 				10
 		));
 		QuestionDAO.save(new Question(
-				0,
 				"Player to make most runs",
 				Util.todayDateString(),
 				playersOption,
-				"MULTIPLE _CHOICE",
+				QuestionType.MULTIPLE_CHOICE,
 				10
 		));
 		QuestionDAO.save(new Question(
-				0,
 				"Player to make most wickets",
 				Util.todayDateString(),
 				playersOption,
-				"MULTIPLE _CHOICE",
+				QuestionType.MULTIPLE_CHOICE,
 				10
 		));
 		QuestionDAO.save(new Question(
-				0,
 				"Man of the Match",
 				Util.todayDateString(),
 				playersOption,
-				"MULTIPLE _CHOICE",
+				QuestionType.MULTIPLE_CHOICE,
 				10
 		));
 	}
 
-	public static void updateScores(String date) {
+	public static void updateScores(String date) throws SQLException {
 		if (!datesScoreUpdated.contains(date)) {
-			Prediction correctPrediction = PredictionDAO.getPredictionsByDateAndEmail(date, Predictor.ADMIN_EMAIL);
+			Prediction correctPrediction = PredictionDAO.getPredictionsByDateAndPredictionId(
+					date,
+					PredictorDAO.getPredictorByEmail(Predictor.ADMIN_EMAIL).getId()
+			);
 			List<Answer> correctAnswers = AnswerDAO.getAnswersByPredictionId(correctPrediction.getId());
 			List<Question> questions = QuestionDAO.getQuestionsByDate(date);
 			List<Prediction> predictions = PredictionDAO.getPredictionsByDate(date);
 
-			predictions.forEach(prediction -> {
+			for (Prediction prediction : predictions) {
 				int points = answersToPints(
 						questions,
 						correctAnswers,
 						AnswerDAO.getAnswersByPredictionId(prediction.getId())
 				);
-				PredictorDAO.updateScore(prediction.getEmail(), points);
-			});
+				PredictorDAO.updateScore(prediction.getId(), points);
+			}
 		}
 	}
 
@@ -166,18 +163,22 @@ public class ServiceData extends TimerTask {
 
 	private static int answerToPoints(List<Question> questions, List<Answer> correctAnswers, Answer answer) {
 		Answer correctAnswer = correctAnswers.stream()
-				.filter(ans -> ans.getQuestionId() == answer.getQuestionId())
+				.filter(ans -> ans.getQuestion().getId() == answer.getQuestion().getId())
 				.findFirst().get();
 		JsonArray answerJson = (JsonArray) PARSER.parse(correctAnswer.getAnswerValue());
 		for (JsonElement el : answerJson) {
 			if (el.getAsString().equals(answer.getAnswerValue()))
-				return QuestionDAO.getQuestionById(answer.getQuestionId()).getPoints();
+				return QuestionDAO.getQuestionById(answer.getQuestion().getId()).getPoints();
 		}
 		return 0;
 	}
 
 	@Override
 	public void run() {
-		addQuestions();
+		try {
+			addQuestions();
+		} catch (SQLException e) {
+			logger.error(e.getMessage(), e);
+		}
 	}
 }

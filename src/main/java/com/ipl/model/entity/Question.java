@@ -5,10 +5,14 @@ public class Question {
 	private String question;
 	private String date;
 	private String options;
-	private String type;
+	private QuestionType type;
 	private int points;
 
-	public Question(int id, String question, String date, String options, String type, int points) {
+	public Question(String question, String date, String options, QuestionType type, int points) {
+		this(0, question, date, options, type, points);
+	}
+
+	public Question(int id, String question, String date, String options, QuestionType type, int points) {
 		this.id = id;
 		this.question = question;
 		this.date = date;
@@ -33,7 +37,7 @@ public class Question {
 		return options;
 	}
 
-	public String getType() {
+	public QuestionType getType() {
 		return type;
 	}
 

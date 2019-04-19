@@ -1,11 +1,13 @@
 package com.ipl.dao;
 
+import com.ipl.dao.util.DatabaseConnection;
 import com.ipl.dao.util.DatabaseInfo;
 import com.ipl.dao.util.Query;
 import com.ipl.dao.util.Update;
 import com.ipl.model.entity.Prediction;
 import org.apache.log4j.Logger;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,21 +16,13 @@ import java.util.List;
 public class PredictionDAO {
 	private final static Logger logger = Logger.getLogger(PredictionDAO.class);
 
-	public static void save(Prediction prediction) {
-		String query = "REPLACE INTO " + DatabaseInfo.PREDICTION
-				+ "(EMAIL, DATE) VALUES(" +
-				"'" + prediction.getEmail() + "'," +
-				"'" + prediction.getDate() + "')";
-		Update.executeQuery(query);
-	}
-
-	public static void createTable() {
-		String query = "CREATE TABLE \"" + DatabaseInfo.PREDICTION + "\" (\n" +
-				"\t\"ID\"\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\n" +
-				"\t\"EMAIL\"\tTEXT NOT NULL,\n" +
-				"\t\"DATE\"\tTEXT NOT NULL\n" +
-				");";
-		Update.executeQuery(query);
+	public static void save(Prediction prediction) throws SQLException {
+		PreparedStatement preparedStatement =
+				DatabaseConnection.getConnection().prepareStatement(
+						"insert into prediction (predictor_id) values (?)"
+				);
+		preparedStatement.setInt(1, prediction.getPredictor().getId());
+		Update.executeQuery(preparedStatement);
 	}
 
 	public static List<Prediction> getAllPredictions(String condition) {
@@ -39,9 +33,9 @@ public class PredictionDAO {
 
 			while (rs.next()) {
 				predictions.add(new Prediction(
-						rs.getInt("ID"),
-						rs.getString("EMAIL"),
-						rs.getString("DATE")
+						rs.getInt("id"),
+						rs.getInt("predictor_id"),
+						rs.getString("date")
 				));
 			}
 		} catch (SQLException e) {
@@ -55,19 +49,15 @@ public class PredictionDAO {
 		return getAllPredictions("");
 	}
 
-	public static List<Prediction> getPredictionsByEmail(String email) {
-		return getAllPredictions("WHERE EMAIL='" + email + "'");
-	}
-
 	public static List<Prediction> getPredictionsByDate(String date) {
 		return getAllPredictions("WHERE DATE='" + date + "'");
 	}
 
-	public static Prediction getPredictionsByDateAndEmail(String date, String email) {
-		return getAllPredictions("WHERE DATE='" + date + "' AND EMAIL='" + email + "'").remove(0);
+	public static Prediction getPredictionById(int id) {
+		return getAllPredictions("WHERE ID=" + id).remove(0);
 	}
 
-	public static Prediction getPredictionById(String id) {
-		return getAllPredictions("WHERE ID='" + id + "'").remove(0);
+	public static Prediction getPredictionsByDateAndPredictionId(String date, int id) {
+		return getAllPredictions("WHERE date='" + date + "' and id=" + id).remove(0);
 	}
 }

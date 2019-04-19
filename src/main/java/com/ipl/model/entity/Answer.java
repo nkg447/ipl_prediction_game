@@ -1,31 +1,44 @@
 package com.ipl.model.entity;
 
+import com.ipl.dao.PredictionDAO;
+import com.ipl.dao.QuestionDAO;
+
 public class Answer {
 	private int id;
-	private int predictionId;
+	private Prediction prediction;
 	private String answerValue;
-	private int questionId;
+	private Question question;
+	private String whenCreated;
 
-	public Answer(int id, int predictionId, String answerValue, int questionId) {
+	public Answer(int predictionId, String answerValue, int questionId) {
+		this(0, predictionId, answerValue, questionId, "");
+	}
+
+	public Answer(int id, int predictionId, String answerValue, int questionId, String whenCreated) {
 		this.id = id;
-		this.predictionId = predictionId;
+		this.prediction = PredictionDAO.getPredictionById(predictionId);
 		this.answerValue = answerValue;
-		this.questionId = questionId;
+		this.question = QuestionDAO.getQuestionById(questionId);
+		this.whenCreated = whenCreated;
 	}
 
 	public int getId() {
 		return id;
 	}
 
-	public int getPredictionId() {
-		return predictionId;
+	public Prediction getPrediction() {
+		return prediction;
 	}
 
 	public String getAnswerValue() {
 		return answerValue;
 	}
 
-	public int getQuestionId() {
-		return questionId;
+	public Question getQuestion() {
+		return question;
+	}
+
+	public String getWhenCreated() {
+		return whenCreated;
 	}
 }

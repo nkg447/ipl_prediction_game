@@ -1,11 +1,13 @@
 package com.ipl.dao;
 
+import com.ipl.dao.util.DatabaseConnection;
 import com.ipl.dao.util.DatabaseInfo;
 import com.ipl.dao.util.Query;
 import com.ipl.dao.util.Update;
 import com.ipl.model.entity.Authentication;
 import org.apache.log4j.Logger;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,21 +17,14 @@ public class AuthenticationDAO {
 
 	private final static Logger logger = Logger.getLogger(AuthenticationDAO.class);
 
-	public static void save(Authentication authentication) {
-		String query = "INSERT INTO " + DatabaseInfo.AUTHENTICATION
-				+ "(EMAIL, PASSWORD) VALUES(" +
-				"'" + authentication.getEmail() + "'," +
-				"'" + authentication.getPassword() + "')";
-		Update.executeQuery(query);
-	}
-
-	public static void createTable() {
-		String query = "CREATE TABLE \"" + DatabaseInfo.AUTHENTICATION + "\" (\n" +
-				"\t\"ID\"\tINTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,\n" +
-				"\t\"EMAIL\"\tTEXT NOT NULL UNIQUE,\n" +
-				"\t\"PASSWORD\"\tTEXT NOT NULL\n" +
-				");";
-		Update.executeQuery(query);
+	public static void save(Authentication authentication) throws SQLException {
+		PreparedStatement preparedStatement =
+				DatabaseConnection.getConnection().prepareStatement(
+						"insert into authentication (EMAIL, PASSWORD) values (?, ?)"
+				);
+		preparedStatement.setString(1, authentication.getEmail());
+		preparedStatement.setString(2, authentication.getPassword());
+		Update.executeQuery(preparedStatement);
 	}
 
 	public static List<Authentication> getAllAuthentications(String condition) {
@@ -40,9 +35,11 @@ public class AuthenticationDAO {
 
 			while (rs.next()) {
 				authentications.add(new Authentication(
-						rs.getInt("ID"),
-						rs.getString("EMAIL"),
-						rs.getString("PASSWORD")
+						rs.getInt("id"),
+						rs.getString("email"),
+						rs.getString("password"),
+						rs.getString("tlm"),
+						rs.getString("whenCreated")
 				));
 			}
 		} catch (SQLException e) {

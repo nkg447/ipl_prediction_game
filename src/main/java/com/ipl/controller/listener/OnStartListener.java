@@ -26,16 +26,7 @@ public class OnStartListener implements ServletContextListener,
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext context=sce.getServletContext();
 		createDatabaseConnection(context);
-		createTables();
 		new ServiceData().run();
-	}
-
-	private void createTables() {
-		PredictionDAO.createTable();
-		PredictorDAO.createTable();
-		AnswerDAO.createTable();
-		QuestionDAO.createTable();
-		AuthenticationDAO.createTable();
 	}
 
 	private void createDatabaseConnection(ServletContext context) {

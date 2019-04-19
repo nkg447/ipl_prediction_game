@@ -3,6 +3,7 @@ package com.ipl.dao.util;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -16,11 +17,17 @@ public class Update {
 		statement.execute(query);
 	}
 
-	public static void executeQuery(String query){
+	public static void executeQuery(String query) {
 		try {
 			Update.execute(query);
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
 		}
+	}
+
+	public static void executeQuery(PreparedStatement preparedStatement) throws SQLException {
+		logger.info("executing - " + preparedStatement);
+		int i = preparedStatement.executeUpdate();
+		logger.info(i + " records inserted");
 	}
 }

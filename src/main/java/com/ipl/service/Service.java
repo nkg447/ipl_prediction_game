@@ -9,18 +9,16 @@ import com.ipl.model.entity.*;
 import java.util.List;
 
 public class Service {
-	public static void register(RegisterForm registerForm) {
+	public static void register(RegisterForm registerForm) throws Exception {
 		Authentication authentication = new Authentication(
-				0,
 				registerForm.getEmail(),
 				ServiceUtil.hashOf(registerForm.getPassword())
 		);
 		AuthenticationDAO.save(authentication);
 		authentication = AuthenticationDAO.getAuthenticationByEmail(registerForm.getEmail());
 		Predictor predictor = new Predictor(
-				registerForm.getName(),
 				authentication.getId(),
-				0
+				registerForm.getName()
 		);
 		PredictorDAO.save(predictor);
 	}
@@ -36,23 +34,23 @@ public class Service {
 		return questions;
 	}
 
-	public static void predict(PredictionForm form, String email) {
+	public static void predict(PredictionForm form, String email) throws Exception {
+		Predictor predictor = PredictorDAO.getPredictorByEmail(email);
 		Prediction prediction = new Prediction(
-				0,
-				email,
+				predictor.getId(),
 				Util.todayDateString()
 		);
 		PredictionDAO.save(prediction);
-		prediction = PredictionDAO.getPredictionsByDateAndEmail(Util.todayDateString(), email);
+		prediction = PredictionDAO.getPredictionsByDateAndPredictionId(Util.todayDateString(), prediction.getId());
 		int pid = prediction.getId();
-		form.getPredictions().stream()
-				.map((p) -> new Answer(
-						0,
-						pid,
-						p.getAnswer(),
-						p.getQuestionId()
-				))
-				.forEach(AnswerDAO::save);
+		for (PredictionForm.Prediction p : form.getPredictions()) {
+			Answer answer = new Answer(
+					pid,
+					p.getAnswer(),
+					p.getQuestionId()
+			);
+			AnswerDAO.save(answer);
+		}
 		if (email.equals(Predictor.ADMIN_EMAIL)) {
 			ServiceData.updateScores(Util.todayDateString());
 		}
