@@ -1,9 +1,9 @@
-package com.ipl.service.data.matchsummary.batting;
+package com.ipl.service.dto.matchsummary.batting;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ipl.service.data.Player;
+import com.ipl.service.dto.Player;
 
 import java.util.Set;
 

@@ -29,6 +29,10 @@ public class Predictor {
 		return score;
 	}
 
+	public void setScore(int score) {
+		this.score = score;
+	}
+
 	@Override
 	public String toString() {
 		return "Predictor{" +

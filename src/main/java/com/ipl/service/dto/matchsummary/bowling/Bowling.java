@@ -1,4 +1,4 @@
-package com.ipl.service.data.matchsummary.bowling;
+package com.ipl.service.dto.matchsummary.bowling;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

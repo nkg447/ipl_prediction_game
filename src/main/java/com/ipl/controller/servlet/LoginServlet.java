@@ -1,8 +1,8 @@
 package com.ipl.controller.servlet;
 
 import com.google.gson.JsonObject;
-import com.ipl.controller.form.LoginForm;
-import com.ipl.controller.form.ValidationException;
+import com.ipl.form.LoginForm;
+import com.ipl.form.ValidationException;
 import com.ipl.service.Service;
 
 import javax.servlet.ServletException;
@@ -26,7 +26,7 @@ public class LoginServlet extends HttpServlet {
 				session.setAttribute("email", form.getEmail());
 			}
 		} catch (ValidationException e) {
-			jsonObject.addProperty("error", "invalid data");
+			jsonObject.addProperty("error", "invalid dto");
 		} catch (Exception e) {
 			jsonObject.addProperty("error", e.getMessage());
 		}

@@ -1,8 +1,8 @@
 package com.ipl.service;
 
 import com.ipl.Util;
-import com.ipl.controller.form.PredictionForm;
-import com.ipl.controller.form.RegisterForm;
+import com.ipl.form.PredictionForm;
+import com.ipl.form.RegisterForm;
 import com.ipl.dao.*;
 import com.ipl.model.entity.*;
 

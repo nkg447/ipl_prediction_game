@@ -1,4 +1,4 @@
-package com.ipl.controller.form;
+package com.ipl.form;
 
 public class RegisterForm implements Validatable {
 	private String name;

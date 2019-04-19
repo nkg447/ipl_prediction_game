@@ -1,4 +1,4 @@
-package com.ipl.controller.form;
+package com.ipl.form;
 
 public class LoginForm implements Validatable {
 	private String email;

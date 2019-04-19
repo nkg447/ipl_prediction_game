@@ -3,13 +3,13 @@ package com.ipl.model.entity;
 public class Answer {
 	private int id;
 	private int predictionId;
-	private String answer;
+	private String answerValue;
 	private int questionId;
 
-	public Answer(int id, int predictionId, String answer, int questionId) {
+	public Answer(int id, int predictionId, String answerValue, int questionId) {
 		this.id = id;
 		this.predictionId = predictionId;
-		this.answer = answer;
+		this.answerValue = answerValue;
 		this.questionId = questionId;
 	}
 
@@ -21,8 +21,8 @@ public class Answer {
 		return predictionId;
 	}
 
-	public String getAnswer() {
-		return answer;
+	public String getAnswerValue() {
+		return answerValue;
 	}
 
 	public int getQuestionId() {

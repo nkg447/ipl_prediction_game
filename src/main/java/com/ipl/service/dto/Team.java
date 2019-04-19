@@ -1,4 +1,4 @@
-package com.ipl.service.data;
+package com.ipl.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

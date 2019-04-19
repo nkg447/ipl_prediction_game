@@ -1,12 +1,12 @@
-package com.ipl.service.data.matchsummary;
+package com.ipl.service.dto.matchsummary;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.ipl.service.data.Team;
-import com.ipl.service.data.matchsummary.batting.Batting;
-import com.ipl.service.data.matchsummary.bowling.Bowling;
-import com.ipl.service.data.matchsummary.fielding.Fielding;
-import com.ipl.service.data.Player;
+import com.ipl.service.dto.Team;
+import com.ipl.service.dto.matchsummary.batting.Batting;
+import com.ipl.service.dto.matchsummary.bowling.Bowling;
+import com.ipl.service.dto.matchsummary.fielding.Fielding;
+import com.ipl.service.dto.Player;
 
 import java.util.Set;
 

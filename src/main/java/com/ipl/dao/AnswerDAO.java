@@ -1,8 +1,8 @@
 package com.ipl.dao;
 
-import com.ipl.dao.sql.DatabaseInfo;
-import com.ipl.dao.sql.Query;
-import com.ipl.dao.sql.Update;
+import com.ipl.dao.util.DatabaseInfo;
+import com.ipl.dao.util.Query;
+import com.ipl.dao.util.Update;
 import com.ipl.model.entity.Answer;
 import org.apache.log4j.Logger;
 
@@ -18,7 +18,7 @@ public class AnswerDAO {
 		String query = "REPLACE INTO " + DatabaseInfo.ANSWER
 				+ "(PREDICTION_ID, ANSWER, QUESTION_ID) VALUES(" +
 				answer.getPredictionId() + "," +
-				"'" + answer.getAnswer() + "'," +
+				"'" + answer.getAnswerValue() + "'," +
 				answer.getQuestionId() + ")";
 		Update.executeQuery(query);
 	}
@@ -58,8 +58,8 @@ public class AnswerDAO {
 		return getAllAnswers("");
 	}
 
-	public static List<Answer> getAnswersByPredictionId(String predictionId) {
-		return getAllAnswers("WHERE PREDICTION_ID='" + predictionId + "'");
+	public static List<Answer> getAnswersByPredictionId(int predictionId) {
+		return getAllAnswers("WHERE PREDICTION_ID=" + predictionId);
 	}
 
 	public static Answer getAnswerById(int id) {

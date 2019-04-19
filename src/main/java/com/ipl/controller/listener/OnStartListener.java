@@ -1,7 +1,7 @@
 package com.ipl.controller.listener;
 
 import com.ipl.dao.*;
-import com.ipl.dao.sql.DatabaseConnection;
+import com.ipl.dao.util.DatabaseConnection;
 import com.ipl.service.ServiceData;
 
 import javax.servlet.ServletContext;

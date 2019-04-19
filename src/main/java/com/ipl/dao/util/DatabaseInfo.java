@@ -1,4 +1,4 @@
-package com.ipl.dao.sql;
+package com.ipl.dao.util;
 
 public class DatabaseInfo {
 	public static final String PREDICTION = "PREDICTION";

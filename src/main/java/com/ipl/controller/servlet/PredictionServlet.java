@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ipl.Util;
-import com.ipl.controller.form.PredictionForm;
+import com.ipl.form.PredictionForm;
 import com.ipl.service.Service;
 
 import javax.servlet.ServletException;
