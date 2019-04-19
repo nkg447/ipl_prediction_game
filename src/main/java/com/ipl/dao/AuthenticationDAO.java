@@ -59,4 +59,8 @@ public class AuthenticationDAO {
 	public static Authentication getAuthenticationByEmail(String email) {
 		return getAllAuthentications("WHERE EMAIL='" + email + "'").remove(0);
 	}
+
+	public static Authentication getAuthenticationById(int id) {
+		return getAllAuthentications("WHERE ID=" + id).remove(0);
+	}
 }

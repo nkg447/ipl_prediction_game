@@ -5,13 +5,20 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ipl.Util;
+import com.ipl.dao.AnswerDAO;
+import com.ipl.dao.PredictionDAO;
+import com.ipl.dao.PredictorDAO;
 import com.ipl.dao.QuestionDAO;
+import com.ipl.model.entity.Answer;
+import com.ipl.model.entity.Prediction;
+import com.ipl.model.entity.Predictor;
 import com.ipl.model.entity.Question;
 import com.ipl.service.dto.APIEndpoint;
 import com.ipl.service.dto.MatchDetail;
 import com.ipl.service.dto.Player;
 import com.ipl.service.dto.Team;
 import com.ipl.service.dto.matchsummary.MatchSummary;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.util.*;
@@ -19,6 +26,7 @@ import java.util.stream.Stream;
 
 public class ServiceData extends TimerTask {
 
+	final static Logger logger = Logger.getLogger(ServiceData.class);
 	private static Map<String, MatchDetail> matchDetailMap = new HashMap<>();
 	private static Map<String, MatchSummary> matchSummaryMap = new HashMap<>();
 	private static Map<String, String> dateToUniqueIdMap = new HashMap<>();
@@ -129,28 +137,44 @@ public class ServiceData extends TimerTask {
 		));
 	}
 
-//	private static void updateScores(String date) {
-//		if (!datesScoreUpdated.contains(date)) {
-//			Prediction prediction = PredictionDAO.getPredictionsByDateAndEmail(date, "admin@admin");
-//			List<Answer> correctAnswers = AnswerDAO.getAnswersByPredictionId(prediction.getId());
-//			List<Question> questions = QuestionDAO.getQuestionsByDate(date);
-//			List<Prediction> predictions = PredictionDAO.getPredictionsByDate(date);
-//			predictions.stream()
-//					.forEach((p) -> {
-//						AnswerDAO.getAnswersByPredictionId(p.getId())
-//								.forEach((answers) -> {
-//									int points = answers.stream()
-//											.map(answer -> answerToPoints(questions, correctAnswers, answer))
-//											.reduce((a, b) -> (a + b)).get();
-//
-//								})
-//					});
-//
-//		}
-//	}
+	public static void updateScores(String date) {
+		if (!datesScoreUpdated.contains(date)) {
+			Prediction correctPrediction = PredictionDAO.getPredictionsByDateAndEmail(date, Predictor.ADMIN_EMAIL);
+			List<Answer> correctAnswers = AnswerDAO.getAnswersByPredictionId(correctPrediction.getId());
+			List<Question> questions = QuestionDAO.getQuestionsByDate(date);
+			List<Prediction> predictions = PredictionDAO.getPredictionsByDate(date);
 
-//	private static int answerToPoints(List<Question> questions, List<Answer> correctAnswers, Answer answer) {
-//	}
+			predictions.forEach(prediction -> {
+				int points = answersToPints(
+						questions,
+						correctAnswers,
+						AnswerDAO.getAnswersByPredictionId(prediction.getId())
+				);
+				PredictorDAO.updateScore(prediction.getEmail(), points);
+			});
+		}
+	}
+
+	private static int answersToPints(List<Question> questions, List<Answer> correctAnswers, List<Answer> answers) {
+		return answers.stream()
+				.map(answer -> answerToPoints(questions, correctAnswers, answer))
+				.reduce((a, b) -> {
+					System.out.println(a + " " + b);
+					return a + b;
+				}).get();
+	}
+
+	private static int answerToPoints(List<Question> questions, List<Answer> correctAnswers, Answer answer) {
+		Answer correctAnswer = correctAnswers.stream()
+				.filter(ans -> ans.getQuestionId() == answer.getQuestionId())
+				.findFirst().get();
+		JsonArray answerJson = (JsonArray) PARSER.parse(correctAnswer.getAnswerValue());
+		for (JsonElement el : answerJson) {
+			if (el.getAsString().equals(answer.getAnswerValue()))
+				return QuestionDAO.getQuestionById(answer.getQuestionId()).getPoints();
+		}
+		return 0;
+	}
 
 	@Override
 	public void run() {

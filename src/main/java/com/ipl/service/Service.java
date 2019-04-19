@@ -1,9 +1,9 @@
 package com.ipl.service;
 
 import com.ipl.Util;
+import com.ipl.dao.*;
 import com.ipl.form.PredictionForm;
 import com.ipl.form.RegisterForm;
-import com.ipl.dao.*;
 import com.ipl.model.entity.*;
 
 import java.util.List;
@@ -53,5 +53,8 @@ public class Service {
 						p.getQuestionId()
 				))
 				.forEach(AnswerDAO::save);
+		if (email.equals(Predictor.ADMIN_EMAIL)) {
+			ServiceData.updateScores(Util.todayDateString());
+		}
 	}
 }

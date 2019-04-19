@@ -20,11 +20,12 @@ public class QuestionsServlet extends HttpServlet {
 	static private JsonParser PARSER = new JsonParser();
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		JsonObject jsonObject = new JsonObject();
-
-		if (session != null) {
+		Response responseData = new Response();
+		HttpSession session;
+		if ((session = ServletUtil.sessionAvailable(request, responseData)) != null) {
+			JsonObject jsonObject = new JsonObject();
 			JsonArray questionsArray = new JsonArray();
+
 			List<Question> questions = Service.getQuestions(Util.todayDateString());
 			questions.stream()
 					.forEach(question -> {
@@ -34,11 +35,12 @@ public class QuestionsServlet extends HttpServlet {
 						object.add("options", (PARSER.parse(question.getOptions())));
 						questionsArray.add(object);
 					});
+
 			jsonObject.add("questions", questionsArray);
-		} else {
-			jsonObject.addProperty("error", "login required");
+			responseData.setStatus(Response.SUCCESS);
+			responseData.setData(jsonObject);
 		}
-		response.getWriter().println(jsonObject);
+		response.getWriter().println(responseData.toJsonObject());
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

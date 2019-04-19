@@ -16,6 +16,7 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		LoginForm form = new LoginForm(request.getParameter("email"),
 				request.getParameter("password"));
+		Response responseData = new Response();
 		JsonObject jsonObject = new JsonObject();
 		boolean authenticated = false;
 		try {
@@ -26,12 +27,13 @@ public class LoginServlet extends HttpServlet {
 				session.setAttribute("email", form.getEmail());
 			}
 		} catch (ValidationException e) {
-			jsonObject.addProperty("error", "invalid dto");
+			responseData.setError("invalid dto");
 		} catch (Exception e) {
-			jsonObject.addProperty("error", e.getMessage());
+			responseData.setError(e.getMessage());
 		}
 		jsonObject.addProperty("authenticated", authenticated);
-		response.getWriter().println(jsonObject);
+		responseData.setData(jsonObject);
+		response.getWriter().println(responseData.toJsonObject());
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -68,7 +68,7 @@ public class QuestionDAO {
 		return getAllQuestions("WHERE DATE='" + date + "'");
 	}
 
-	public static Question getQuestionById(String id) {
-		return getAllQuestions("WHERE ID='" + id + "'").remove(0);
+	public static Question getQuestionById(int id) {
+		return getAllQuestions("WHERE ID=" + id).remove(0);
 	}
 }
