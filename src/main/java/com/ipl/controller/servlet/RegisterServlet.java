@@ -1,6 +1,8 @@
 package com.ipl.controller.servlet;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.ipl.Util;
 import com.ipl.form.RegisterForm;
 import com.ipl.form.ValidationException;
 import com.ipl.service.Service;
@@ -14,13 +16,10 @@ import java.io.IOException;
 
 public class RegisterServlet extends HttpServlet {
 	final static Logger logger = Logger.getLogger(RegisterServlet.class);
+	static private JsonParser PARSER = new JsonParser();
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RegisterForm registerForm = new RegisterForm(
-				request.getParameter("name"),
-				request.getParameter("email"),
-				request.getParameter("password")
-		);
+		RegisterForm registerForm = getForm(request);
 		Response responseDate = new Response();
 		JsonObject jsonObject = new JsonObject();
 		try {
@@ -35,6 +34,17 @@ public class RegisterServlet extends HttpServlet {
 			responseDate.setError(e.getMessage());
 		}
 		response.getWriter().println(responseDate.toJsonObject());
+	}
+
+	private RegisterForm getForm(HttpServletRequest request) throws IOException {
+		String body = Util.getRequestBody(request);
+		JsonObject jsonObject = (JsonObject) PARSER.parse(body);
+
+		return new RegisterForm(
+				jsonObject.get("name").getAsString(),
+				jsonObject.get("email").getAsString(),
+				jsonObject.get("password").getAsString()
+		);
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

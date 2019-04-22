@@ -133,7 +133,7 @@ public class ServiceData extends TimerTask {
 
 	public static void updateScores(String date) throws SQLException {
 		if (!datesScoreUpdated.contains(date)) {
-			Prediction correctPrediction = PredictionDAO.getPredictionsByDateAndPredictionId(
+			Prediction correctPrediction = PredictionDAO.getPredictionsByDateAndPredictorId(
 					date,
 					PredictorDAO.getPredictorByEmail(Predictor.ADMIN_EMAIL).getId()
 			);

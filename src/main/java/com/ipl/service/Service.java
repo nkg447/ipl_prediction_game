@@ -41,7 +41,7 @@ public class Service {
 				Util.todayDateString()
 		);
 		PredictionDAO.save(prediction);
-		prediction = PredictionDAO.getPredictionsByDateAndPredictionId(Util.todayDateString(), prediction.getId());
+		prediction = PredictionDAO.getPredictionsByDateAndPredictorId(Util.todayDateString(), predictor.getId());
 		int pid = prediction.getId();
 		for (PredictionForm.Prediction p : form.getPredictions()) {
 			Answer answer = new Answer(

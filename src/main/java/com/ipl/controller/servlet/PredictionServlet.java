@@ -32,6 +32,7 @@ public class PredictionServlet extends HttpServlet {
 			try {
 				Service.predict(form, (String) session.getAttribute("email"));
 			} catch (Exception e) {
+				logger.error(e.getMessage(), e);
 				responseData.setError(e.getMessage());
 			}
 			responseData.setStatus(Response.SUCCESS);

@@ -34,10 +34,10 @@ public class PredictorDAO {
 	public static void update(Predictor predictor) throws SQLException {
 		PreparedStatement preparedStatement =
 				DatabaseConnection.getConnection().prepareStatement(
-						"replace into predictor (AUTH_ID, SCORE) values (?, ?)"
+						"UPDATE `predictor` SET `score` = ? WHERE `auth_id` = ?"
 				);
-		preparedStatement.setInt(1, predictor.getAuthentication().getId());
-		preparedStatement.setInt(2, predictor.getScore());
+		preparedStatement.setInt(1, predictor.getScore());
+		preparedStatement.setInt(2, predictor.getAuthentication().getId());
 		Update.executeQuery(preparedStatement);
 	}
 
@@ -71,7 +71,6 @@ public class PredictorDAO {
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
 		}
-		logger.info(predictors);
 		return predictors;
 	}
 

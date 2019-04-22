@@ -37,7 +37,7 @@ public class AnswerDAO {
 				answers.add(new Answer(
 						rs.getInt("ID"),
 						rs.getInt("PREDICTION_ID"),
-						rs.getString("ANSWER"),
+						rs.getString("answer_value"),
 						rs.getInt("QUESTION_ID"),
 						rs.getString("whenCreated")
 				));
@@ -45,7 +45,6 @@ public class AnswerDAO {
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
 		}
-		logger.info(answers);
 		return answers;
 	}
 

@@ -50,14 +50,14 @@ public class PredictionDAO {
 	}
 
 	public static List<Prediction> getPredictionsByDate(String date) {
-		return getAllPredictions("WHERE DATE='" + date + "'");
+		return getAllPredictions("WHERE DATE LIKE '" + date + "%'");
 	}
 
 	public static Prediction getPredictionById(int id) {
 		return getAllPredictions("WHERE ID=" + id).remove(0);
 	}
 
-	public static Prediction getPredictionsByDateAndPredictionId(String date, int id) {
-		return getAllPredictions("WHERE date LIKE '" + date + "%' and id=" + id).remove(0);
+	public static Prediction getPredictionsByDateAndPredictorId(String date, int id) {
+		return getAllPredictions("WHERE date LIKE '" + date + "%' and predictor_id=" + id).remove(0);
 	}
 }

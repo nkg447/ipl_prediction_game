@@ -48,7 +48,6 @@ public class QuestionDAO {
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
 		}
-		logger.info(questions);
 		return questions;
 	}
 

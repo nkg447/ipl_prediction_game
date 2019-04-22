@@ -45,7 +45,6 @@ public class AuthenticationDAO {
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
 		}
-		logger.info(authentications);
 		return authentications;
 	}
 
