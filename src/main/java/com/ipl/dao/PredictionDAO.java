@@ -58,6 +58,6 @@ public class PredictionDAO {
 	}
 
 	public static Prediction getPredictionsByDateAndPredictionId(String date, int id) {
-		return getAllPredictions("WHERE date='" + date + "' and id=" + id).remove(0);
+		return getAllPredictions("WHERE date LIKE '" + date + "%' and id=" + id).remove(0);
 	}
 }

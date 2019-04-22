@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 19, 2019 at 02:31 PM
+-- Generation Time: Apr 22, 2019 at 07:17 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `answer` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `prediction_id` int(11) NOT NULL,
   `answer_value` mediumtext NOT NULL,
   `question_id` int(11) NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE `answer` (
 --
 
 CREATE TABLE `authentication` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `email` text NOT NULL,
   `password` tinytext NOT NULL,
   `tlm` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -57,7 +57,7 @@ CREATE TABLE `authentication` (
 --
 
 CREATE TABLE `prediction` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `predictor_id` int(11) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -69,7 +69,7 @@ CREATE TABLE `prediction` (
 --
 
 CREATE TABLE `predictor` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `auth_id` int(11) NOT NULL,
   `name` tinytext NOT NULL,
   `tlm` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -84,9 +84,9 @@ CREATE TABLE `predictor` (
 --
 
 CREATE TABLE `question` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `question` text NOT NULL,
-  `date` datetime NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `options` mediumtext NOT NULL,
   `type` enum('MULTIPLE_CHOICE','STRING','INTEGER','') NOT NULL,
   `points` int(11) NOT NULL
@@ -135,23 +135,35 @@ ALTER TABLE `question`
 -- AUTO_INCREMENT for dumped tables
 --
 
-# --
-# -- AUTO_INCREMENT for table `authentication`
-# --
-# ALTER TABLE `authentication`
-#   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-#
-# --
-# -- AUTO_INCREMENT for table `prediction`
-# --
-# ALTER TABLE `prediction`
-#   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-#
-# --
-# -- AUTO_INCREMENT for table `predictor`
-# --
-# ALTER TABLE `predictor`
-#   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `answer`
+--
+ALTER TABLE `answer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `authentication`
+--
+ALTER TABLE `authentication`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `prediction`
+--
+ALTER TABLE `prediction`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `predictor`
+--
+ALTER TABLE `predictor`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `question`
+--
+ALTER TABLE `question`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -161,7 +173,7 @@ ALTER TABLE `question`
 -- Constraints for table `answer`
 --
 ALTER TABLE `answer`
-  ADD CONSTRAINT `answer_ibfk_1` FOREIGN KEY (`prediction_id`) REFERENCES `prediction` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `answer_ibfk_1` FOREIGN KEY (`prediction_id`) REFERENCES `prediction` (`id`),
   ADD CONSTRAINT `answer_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`);
 
 --

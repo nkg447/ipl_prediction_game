@@ -63,7 +63,7 @@ public class QuestionDAO {
 	}
 
 	public static List<Question> getQuestionsByDate(String date) {
-		return getAllQuestions("WHERE DATE='" + date + "'");
+		return getAllQuestions("WHERE DATE LIKE '" + date + "%'");
 	}
 
 	public static Question getQuestionById(int id) {
