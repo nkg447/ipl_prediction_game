@@ -8,28 +8,21 @@
     <link rel="stylesheet" href="styles/index.css" />
   </head>
   <body>
-    <form class="form" action="/login" method="POST">
-      <div class="logo">
-        <img src="/assets/logo.png" />
-      </div>
+    <form class="form" action="/register" method="POST">
+      <h3>Registration Form</h3>
 
-      <h3>Login</h3>
+      <input required type="text" name="name" placeholder="Name" />
 
-      <input required type="text" name="email" placeholder="Email" />
+      <input required type="email" name="email" placeholder="Email" />
 
       <input required type="password" name="pwd" placeholder="Password" />
 
       <span>
-        Forgot Password?
-      </span>
-
       <button type="submit" class="btn btn-primary">
-        Login
+        Register
       </button>
 
-      <p class="message">
-        Not registered? <a href="register.jsp">Create an account</a>
-      </p>
+      <p class="message">Already registered? <a href="index.jsp">Login</a></p>
     </form>
   </body>
 </html>
