@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ipl.Util;
 import com.ipl.form.PredictionForm;
-import com.ipl.service.Service;
+import com.ipl.service.PredictService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -30,7 +30,7 @@ public class PredictionServlet extends HttpServlet {
 			JsonObject jsonObject = new JsonObject();
 			PredictionForm form = getForm(request);
 			try {
-				Service.predict(form, (String) session.getAttribute("email"));
+				PredictService.predict(form, (String) session.getAttribute("email"));
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 				responseData.setError(e.getMessage());

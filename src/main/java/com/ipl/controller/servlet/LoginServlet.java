@@ -5,7 +5,7 @@ import com.google.gson.JsonParser;
 import com.ipl.Util;
 import com.ipl.form.LoginForm;
 import com.ipl.form.ValidationException;
-import com.ipl.service.Service;
+import com.ipl.service.AuthService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
 		boolean authenticated = false;
 		try {
 			form.validate();
-			authenticated = Service.authenticate(form.getEmail(), form.getPassword());
+			authenticated = AuthService.authenticate(form.getEmail(), form.getPassword());
 			if (authenticated) {
 				HttpSession session = request.getSession(true);
 				session.setAttribute("email", form.getEmail());

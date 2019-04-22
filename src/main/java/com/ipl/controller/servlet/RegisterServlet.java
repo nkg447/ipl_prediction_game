@@ -5,7 +5,7 @@ import com.google.gson.JsonParser;
 import com.ipl.Util;
 import com.ipl.form.RegisterForm;
 import com.ipl.form.ValidationException;
-import com.ipl.service.Service;
+import com.ipl.service.RegisterService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -24,7 +24,7 @@ public class RegisterServlet extends HttpServlet {
 		JsonObject jsonObject = new JsonObject();
 		try {
 			registerForm.validate();
-			Service.register(registerForm);
+			RegisterService.register(registerForm);
 			jsonObject.addProperty("email", registerForm.getEmail());
 			jsonObject.addProperty("registered", true);
 			responseDate.setData(jsonObject);
