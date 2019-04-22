@@ -8,6 +8,14 @@
         <param-name>db_path</param-name>
         <param-value>WEB-INF/classes/ipl.db</param-value>
     </context-param>
+    <filter>
+        <filter-name>CommonFilter</filter-name>
+        <filter-class>com.ipl.controller.filter.CommonFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CommonFilter</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
 
     <listener>
         <listener-class>com.ipl.controller.listener.OnStartListener</listener-class>

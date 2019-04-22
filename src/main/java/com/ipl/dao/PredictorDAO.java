@@ -87,9 +87,9 @@ public class PredictorDAO {
 	}
 
 	public static Predictor getPredictorByEmail(String email) {
-		return PredictorDAO.getPredictorByAuthId(
-				AuthenticationDAO.getAuthenticationByEmail(email).getId()
-		);
+		return getAllPredictors("WHERE " +
+				"AUTH_ID=(select id from authentication where email='"+email+"')")
+				.remove(0);
 	}
 
 	public static void updateScore(int id, int points) throws SQLException {

@@ -149,6 +149,7 @@ public class ServiceData extends TimerTask {
 				);
 				PredictorDAO.updateScore(prediction.getId(), points);
 			}
+			datesScoreUpdated.add(date);
 		}
 	}
 
