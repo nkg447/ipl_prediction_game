@@ -135,3 +135,31 @@ N/A
     "error": { ... }
 }
 ```
+
+### MatchDetails ("/match")
+
+#### Request - 
+```
+N/A
+```
+#### Response - 
+```
+{
+    "status": "SUCCESS",
+    "data": {
+        "players": [
+            "Ajinkya Rahane",
+            "Amit Mishra",
+            "Varun Aaron",
+            .
+            .
+            .
+        ],
+        "teams": [
+            "Rajasthan Royals",
+            "Delhi Capitals"
+        ]
+    },
+    "error": null
+}
+```

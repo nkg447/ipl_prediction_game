@@ -78,7 +78,11 @@ public class ServiceData extends TimerTask {
 		return null;
 	}
 
-	public static String playerDetailsJson(String date) {
+	public static String playerDetailsJson(String date){
+		return playerDetails(date).toString();
+	}
+
+	public static JsonArray playerDetails(String date) {
 		MatchDetail matchDetail = ServiceData.getMatchDetail(date);
 		JsonArray players = new JsonArray();
 		Stream.concat(matchDetail.getSquad().get(0).getPlayers().stream(),
@@ -87,16 +91,20 @@ public class ServiceData extends TimerTask {
 				.sorted()
 				.forEach(players::add);
 
-		return players.toString();
+		return players;
 	}
 
 	public static String teamNamesJson(String date) {
+		return teamNames(date).toString();
+	}
+
+	public static JsonArray teamNames(String date) {
 		MatchDetail matchDetail = ServiceData.getMatchDetail(date);
 		JsonArray teams = new JsonArray();
 		matchDetail.getSquad().stream()
 				.map(Team::getName)
 				.forEach(teams::add);
-		return teams.toString();
+		return teams;
 	}
 
 	public static void addQuestions() throws SQLException {
