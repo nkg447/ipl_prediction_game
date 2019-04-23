@@ -5,6 +5,7 @@ import com.google.gson.JsonParser;
 import com.ipl.Util;
 import com.ipl.form.LoginForm;
 import com.ipl.form.ValidationException;
+import com.ipl.model.entity.Predictor;
 import com.ipl.service.AuthService;
 
 import javax.servlet.ServletException;
@@ -35,6 +36,7 @@ public class LoginServlet extends HttpServlet {
 			responseData.setError(e.getMessage());
 		}
 		jsonObject.addProperty("authenticated", authenticated);
+		jsonObject.addProperty("admin", form.getEmail().equals(Predictor.ADMIN_EMAIL));
 		responseData.setData(jsonObject);
 		response.getWriter().println(responseData.toJsonObject());
 	}

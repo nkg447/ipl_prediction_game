@@ -42,7 +42,8 @@ endpoint - "https://ipl-prediction-game.herokuapp.com/"
 {
     "status": "SUCCESS",
     "data": {
-        "authenticated": true
+        "authenticated": true,
+        "admin": false
     },
     "error": { ... }
 }
@@ -74,7 +75,8 @@ N/A
             .
             .
             .
-        ]
+        ],
+        "admin": false
     },
     "error": { ... }
 }
