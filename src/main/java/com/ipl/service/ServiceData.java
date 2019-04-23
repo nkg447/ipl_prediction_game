@@ -78,7 +78,7 @@ public class ServiceData extends TimerTask {
 		return null;
 	}
 
-	public static String playerDetailsJson(String date){
+	public static String playerDetailsJson(String date) {
 		return playerDetails(date).toString();
 	}
 
@@ -164,10 +164,7 @@ public class ServiceData extends TimerTask {
 	private static int answersToPints(List<Question> questions, List<Answer> correctAnswers, List<Answer> answers) {
 		return answers.stream()
 				.map(answer -> answerToPoints(questions, correctAnswers, answer))
-				.reduce((a, b) -> {
-					System.out.println(a + " " + b);
-					return a + b;
-				}).get();
+				.reduce((a, b) -> a + b).get();
 	}
 
 	private static int answerToPoints(List<Question> questions, List<Answer> correctAnswers, Answer answer) {

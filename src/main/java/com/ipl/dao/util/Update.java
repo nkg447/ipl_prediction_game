@@ -17,17 +17,24 @@ public class Update {
 		statement.execute(query);
 	}
 
-	public static void executeQuery(String query) {
+	public static void executeQuery(String query) throws SQLException {
 		try {
 			Update.execute(query);
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
+			throw e;
 		}
 	}
 
 	public static void executeQuery(PreparedStatement preparedStatement) throws SQLException {
 		logger.info("executing - " + preparedStatement);
-		int i = preparedStatement.executeUpdate();
+		int i = 0;
+		try {
+			i = preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			logger.error(e.getMessage(), e);
+			throw e;
+		}
 		logger.info(i + " records inserted");
 	}
 }

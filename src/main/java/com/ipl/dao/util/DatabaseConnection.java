@@ -9,13 +9,16 @@ import java.sql.SQLException;
 public class DatabaseConnection {
 	private final static Logger logger = Logger.getLogger(DatabaseConnection.class);
 	private static Connection CONNECTION_INSTANCE;
+	private static String DATABASE_URL =
+			(System.getenv("JAWSDB_URL")!=null)?
+					System.getenv("JAWSDB_URL") :
+					"jdbc:mysql://localhost:3306/ipl?user=root";
 
 	private static Connection createConnection() {
 		Connection conn = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/ipl?user=root");
+			conn = DriverManager.getConnection(DATABASE_URL);
 			logger.info("Connection to SQLite has been established.");
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);

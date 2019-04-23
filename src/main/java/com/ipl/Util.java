@@ -31,8 +31,8 @@ public class Util {
 			con.setRequestMethod("GET");
 
 			int responseCode = con.getResponseCode();
-			System.out.println("\nSending 'GET' request to URL : " + url);
-			System.out.println("Response Code : " + responseCode);
+			logger.info("\nSending 'GET' request to URL : " + url);
+			logger.info("Response Code : " + responseCode);
 
 			BufferedReader in = new BufferedReader(
 					new InputStreamReader(con.getInputStream()));

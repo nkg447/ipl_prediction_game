@@ -41,16 +41,6 @@ public class PredictorDAO {
 		Update.executeQuery(preparedStatement);
 	}
 
-	public static void createTable() {
-		String query = "CREATE TABLE \"" + DatabaseInfo.PREDICTOR + "\" (\n" +
-				"\t\"AUTHENTICATION_ID\"\tTEXT NOT NULL UNIQUE,\n" +
-				"\t\"NAME\"\tTEXT NOT NULL,\n" +
-				"\t\"SCORE\"\tINTEGER NOT NULL,\n" +
-				"\tPRIMARY KEY(\"AUTHENTICATION_ID\")\n" +
-				");";
-		Update.executeQuery(query);
-	}
-
 	public static List<Predictor> getAllPredictors(String condition) {
 		String query = "SELECT * FROM " + DatabaseInfo.PREDICTOR + " " + condition;
 		List<Predictor> predictors = new ArrayList<>();

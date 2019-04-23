@@ -15,12 +15,12 @@ public class Query {
 		return resultSet;
 	}
 
-	public static ResultSet executeQuery(String query){
+	public static ResultSet executeQuery(String query) throws SQLException {
 		try {
 			return Query.execute(query);
 		} catch (SQLException e) {
 			logger.error(e.getMessage(), e);
+			throw e;
 		}
-		return null;
 	}
 }
