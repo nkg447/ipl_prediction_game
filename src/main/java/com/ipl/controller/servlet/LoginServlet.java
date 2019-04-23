@@ -7,6 +7,7 @@ import com.ipl.form.LoginForm;
 import com.ipl.form.ValidationException;
 import com.ipl.model.entity.Predictor;
 import com.ipl.service.AuthService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class LoginServlet extends HttpServlet {
+	final static Logger logger = Logger.getLogger(LoginServlet.class);
 	static private JsonParser PARSER = new JsonParser();
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,8 +33,9 @@ public class LoginServlet extends HttpServlet {
 				session.setAttribute("email", form.getEmail());
 			}
 		} catch (ValidationException e) {
-			responseData.setError("invalid dto");
+			responseData.setError(e.getEntity() + " invalid");
 		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 			responseData.setError(e.getMessage());
 		}
 		jsonObject.addProperty("authenticated", authenticated);

@@ -34,7 +34,7 @@ public class PredictionServlet extends HttpServlet {
 				form.validate();
 				PredictService.predict(form, (String) session.getAttribute("email"));
 			} catch (ValidationException e) {
-				responseData.setError("invalid dto");
+				responseData.setError(e.getEntity() + " invalid");
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 				responseData.setError(e.getMessage());

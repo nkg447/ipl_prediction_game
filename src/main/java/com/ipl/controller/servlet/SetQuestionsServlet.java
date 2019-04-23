@@ -38,7 +38,7 @@ public class SetQuestionsServlet extends HttpServlet {
 				SetQuestionService.setQuestions(form);
 				responseData.setStatus(Response.SUCCESS);
 			} catch (ValidationException e) {
-				responseData.setError("invalid dto");
+				responseData.setError(e.getEntity() + " invalid");
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 				responseData.setStatus(Response.FAILURE);

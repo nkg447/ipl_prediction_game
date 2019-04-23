@@ -20,20 +20,21 @@ public class RegisterServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RegisterForm registerForm = getForm(request);
-		Response responseDate = new Response();
+		Response responseData = new Response();
 		JsonObject jsonObject = new JsonObject();
 		try {
 			registerForm.validate();
 			RegisterService.register(registerForm);
 			jsonObject.addProperty("email", registerForm.getEmail());
 			jsonObject.addProperty("registered", true);
-			responseDate.setData(jsonObject);
+			responseData.setData(jsonObject);
 		} catch (ValidationException e) {
-			responseDate.setError(e.getMessage());
+			responseData.setError(e.getEntity() + " invalid");
 		} catch (Exception e) {
-			responseDate.setError(e.getMessage());
+			logger.error(e.getMessage(), e);
+			responseData.setError(e.getMessage());
 		}
-		response.getWriter().println(responseDate.toJsonObject());
+		response.getWriter().println(responseData.toJsonObject());
 	}
 
 	private RegisterForm getForm(HttpServletRequest request) throws IOException {
