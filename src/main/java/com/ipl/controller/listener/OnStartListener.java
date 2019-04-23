@@ -30,9 +30,7 @@ public class OnStartListener implements ServletContextListener,
 	}
 
 	private void createDatabaseConnection(ServletContext context) {
-		String db_path = context.getInitParameter("db_path");
-		db_path =context.getRealPath(db_path).replace("\\", "/");
-		DatabaseConnection.getConnection(db_path);
+		DatabaseConnection.getConnection();
 	}
 
 	public void contextDestroyed(ServletContextEvent sce) {

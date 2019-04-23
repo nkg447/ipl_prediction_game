@@ -10,7 +10,7 @@ public class DatabaseConnection {
 	private final static Logger logger = Logger.getLogger(DatabaseConnection.class);
 	private static Connection CONNECTION_INSTANCE;
 
-	private static Connection createConnection(String db_path) {
+	private static Connection createConnection() {
 		Connection conn = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -26,16 +26,9 @@ public class DatabaseConnection {
 		return conn;
 	}
 
-	public static Connection getConnection(String db_path) {
-		if (CONNECTION_INSTANCE == null) {
-			CONNECTION_INSTANCE = createConnection(db_path);
-		}
-		return CONNECTION_INSTANCE;
-	}
-
 	public static Connection getConnection() {
 		if (CONNECTION_INSTANCE == null) {
-			CONNECTION_INSTANCE = createConnection("");
+			CONNECTION_INSTANCE = createConnection();
 		}
 		return CONNECTION_INSTANCE;
 	}

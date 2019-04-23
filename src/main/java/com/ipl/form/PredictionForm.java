@@ -2,7 +2,7 @@ package com.ipl.form;
 
 import java.util.List;
 
-public class PredictionForm {
+public class PredictionForm implements Validatable {
 
 	private List<Prediction> predictions;
 
@@ -14,7 +14,14 @@ public class PredictionForm {
 		return predictions;
 	}
 
-	public static class Prediction{
+	@Override
+	public void validate() throws ValidationException {
+		for (Prediction prediction : predictions) {
+			prediction.validate();
+		}
+	}
+
+	public static class Prediction implements Validatable {
 		private int questionId;
 		private String answer;
 
@@ -29,6 +36,12 @@ public class PredictionForm {
 
 		public String getAnswer() {
 			return answer;
+		}
+
+		@Override
+		public void validate() throws ValidationException {
+			FormUtil.validateAnswer(answer);
+			FormUtil.validateId(questionId);
 		}
 	}
 }

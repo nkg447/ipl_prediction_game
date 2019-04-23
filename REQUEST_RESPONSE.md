@@ -165,3 +165,37 @@ N/A
     "error": null
 }
 ```
+
+### SetQuestions ("/setquestions")
+
+#### Request - 
+```
+{
+    "questions": [
+        {
+            "question": "question to ask",
+            "type": "MULTIPLE_CHOICE",
+            "options": ["abc", "xyz"],
+            "points": 10
+        },
+        {
+            "question": "question to ask",
+            "type": "INTEGER",
+            "options": [],
+            "points": 10
+        }
+        .
+        .
+        .
+    ],
+    "date": "yyyy-mm-dd"
+}
+```
+#### Response - 
+```
+{
+    "status": "SUCCESS",
+    "data": null,
+    "error": null
+}
+```

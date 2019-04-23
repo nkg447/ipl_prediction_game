@@ -4,6 +4,7 @@ import com.ipl.dao.util.DatabaseConnection;
 import com.ipl.dao.util.DatabaseInfo;
 import com.ipl.dao.util.Query;
 import com.ipl.dao.util.Update;
+import com.ipl.model.entity.ModelUtil;
 import com.ipl.model.entity.Question;
 import com.ipl.model.entity.QuestionType;
 import org.apache.log4j.Logger;
@@ -41,7 +42,7 @@ public class QuestionDAO {
 						rs.getString("question"),
 						rs.getString("date"),
 						rs.getString("options"),
-						questionTypeToEnum(rs.getString("type")),
+						ModelUtil.questionTypeToEnum(rs.getString("type")),
 						rs.getInt("points")
 				));
 			}
@@ -49,12 +50,6 @@ public class QuestionDAO {
 			logger.error(e.getMessage(), e);
 		}
 		return questions;
-	}
-
-	private static QuestionType questionTypeToEnum(String type) {
-		if(type.equals(QuestionType.INTEGER)) return QuestionType.INTEGER;
-		if(type.equals(QuestionType.MULTIPLE_CHOICE)) return QuestionType.MULTIPLE_CHOICE;
-		return QuestionType.STRING;
 	}
 
 	public static List<Question> getAllQuestions() {

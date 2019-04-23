@@ -4,10 +4,6 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
-    <context-param>
-        <param-name>db_path</param-name>
-        <param-value>WEB-INF/classes/ipl.db</param-value>
-    </context-param>
     <filter>
         <filter-name>CommonFilter</filter-name>
         <filter-class>com.ipl.controller.filter.CommonFilter</filter-class>
@@ -48,6 +44,11 @@
         <servlet-name>MatchServlet</servlet-name>
         <servlet-class>com.ipl.controller.servlet.MatchServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SetQuestionsServlet</servlet-name>
+        <servlet-class>com.ipl.controller.servlet.SetQuestionsServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -75,6 +76,10 @@
     <servlet-mapping>
         <servlet-name>MatchServlet</servlet-name>
         <url-pattern>/match</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SetQuestionsServlet</servlet-name>
+        <url-pattern>/setquestions</url-pattern>
     </servlet-mapping>
 
 </web-app>
