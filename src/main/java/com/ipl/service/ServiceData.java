@@ -155,7 +155,7 @@ public class ServiceData extends TimerTask {
 						correctAnswers,
 						AnswerDAO.getAnswersByPredictionId(prediction.getId())
 				);
-				PredictorDAO.updateScore(prediction.getId(), points);
+				PredictorDAO.updateScore(prediction.getPredictor().getId(), points);
 			}
 			datesScoreUpdated.add(date);
 		}
