@@ -8,5 +8,9 @@ function register() {
     email: email,
     password: password
   });
-  sendPost(jsonData, "http://localhost:8080/register");
+  axios.post("register", jsonData).then(response => {
+    if (response.data.data.authenticated) {
+      window.location.replace("/index.html");
+    }
+  });
 }
