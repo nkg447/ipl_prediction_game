@@ -28,8 +28,10 @@ public class RegisterServlet extends HttpServlet {
 			jsonObject.addProperty("email", registerForm.getEmail());
 			jsonObject.addProperty("registered", true);
 			responseData.setData(jsonObject);
+			responseData.setStatus(Response.SUCCESS);
 		} catch (ValidationException e) {
 			responseData.setError(e.getEntity() + " invalid");
+			responseData.setStatus(Response.FAILURE);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			responseData.setError(e.getMessage());

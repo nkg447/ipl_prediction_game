@@ -41,6 +41,7 @@ public class LoginServlet extends HttpServlet {
 		jsonObject.addProperty("authenticated", authenticated);
 		jsonObject.addProperty("admin", form.getEmail().equals(Predictor.ADMIN_EMAIL));
 		responseData.setData(jsonObject);
+		responseData.setStatus(Response.SUCCESS);
 		response.getWriter().println(responseData.toJsonObject());
 	}
 
