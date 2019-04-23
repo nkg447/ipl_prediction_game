@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ipl.Util;
 import com.ipl.form.PredictionForm;
+import com.ipl.form.ValidationException;
 import com.ipl.service.PredictService;
 import org.apache.log4j.Logger;
 
@@ -30,7 +31,10 @@ public class PredictionServlet extends HttpServlet {
 			JsonObject jsonObject = new JsonObject();
 			PredictionForm form = getForm(request);
 			try {
+				form.validate();
 				PredictService.predict(form, (String) session.getAttribute("email"));
+			} catch (ValidationException e) {
+				responseData.setError("invalid dto");
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 				responseData.setError(e.getMessage());

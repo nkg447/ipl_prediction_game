@@ -9,6 +9,11 @@ public class ValidationException extends Exception {
 		this.entity = entity;
 	}
 
+	public ValidationException(String entity) {
+		super("null");
+		this.entity = entity;
+	}
+
 	public String getEntity() {
 		return entity;
 	}

@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ipl.Util;
 import com.ipl.form.QuestionsForm;
+import com.ipl.form.ValidationException;
 import com.ipl.model.entity.Predictor;
 import com.ipl.service.SetQuestionService;
 import org.apache.log4j.Logger;
@@ -16,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,9 +34,12 @@ public class SetQuestionsServlet extends HttpServlet {
 			QuestionsForm form = getForm(request);
 			JsonObject jsonObject = new JsonObject();
 			try {
+				form.validate();
 				SetQuestionService.setQuestions(form);
 				responseData.setStatus(Response.SUCCESS);
-			} catch (SQLException e) {
+			} catch (ValidationException e) {
+				responseData.setError("invalid dto");
+			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 				responseData.setStatus(Response.FAILURE);
 				responseData.setError(e.getMessage());
