@@ -1,17 +1,20 @@
 package com.ipl.form;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class PredictionForm implements Validatable {
+public class PredictionForm extends Form{
 
 	private List<Prediction> predictions;
 
-	public PredictionForm(List<Prediction> predictions) {
-		this.predictions = predictions;
+	public PredictionForm() {
 	}
 
-	public List<Prediction> getPredictions() {
-		return predictions;
+	public PredictionForm(List<Prediction> predictions) {
+		this.predictions = predictions;
 	}
 
 	@Override
@@ -19,6 +22,34 @@ public class PredictionForm implements Validatable {
 		for (Prediction prediction : predictions) {
 			prediction.validate();
 		}
+	}
+
+	@Override
+	public Form populate(JsonElement data) {
+		JsonArray jsonElements = data.getAsJsonArray();
+		List<PredictionForm.Prediction> predictions = new ArrayList<>();
+
+		for (JsonElement je : jsonElements) {
+			String answer = "";
+			if (je.getAsJsonObject().get("answer").isJsonArray()) {
+				answer = je.getAsJsonObject().get("answer").getAsJsonArray().toString();
+			} else
+				answer = je.getAsJsonObject().get("answer").getAsString();
+			predictions.add(new PredictionForm.Prediction(
+					je.getAsJsonObject().get("id").getAsInt(),
+					answer
+			));
+		}
+		this.setPredictions(predictions);
+		return this;
+	}
+
+	public List<Prediction> getPredictions() {
+		return predictions;
+	}
+
+	public void setPredictions(List<Prediction> predictions) {
+		this.predictions = predictions;
 	}
 
 	public static class Prediction implements Validatable {
