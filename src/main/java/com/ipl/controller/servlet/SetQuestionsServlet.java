@@ -1,7 +1,5 @@
 package com.ipl.controller.servlet;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.ipl.form.QuestionsForm;
 import com.ipl.form.ValidationException;
 import com.ipl.model.entity.Predictor;
@@ -16,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class SetQuestionsServlet extends HttpServlet {
-	final static Logger logger = Logger.getLogger(SetQuestionsServlet.class);
+	private static final Logger logger = Logger.getLogger(SetQuestionsServlet.class);
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Response responseData = new Response();
@@ -24,7 +22,7 @@ public class SetQuestionsServlet extends HttpServlet {
 		if ((session = ServletUtil.sessionAvailable(request, responseData)) != null &&
 				session.getAttribute("email").equals(Predictor.ADMIN_EMAIL)) {
 			QuestionsForm form = ServletUtil.getForm(request, new QuestionsForm());
-			JsonObject jsonObject = new JsonObject();
+
 			try {
 				form.validate();
 				SetQuestionService.setQuestions(form);
@@ -33,7 +31,6 @@ public class SetQuestionsServlet extends HttpServlet {
 				responseData.setError(e.getEntity() + " invalid");
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
-				responseData.setStatus(Response.FAILURE);
 				responseData.setError(e.getMessage());
 			}
 		}

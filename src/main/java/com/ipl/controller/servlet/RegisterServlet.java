@@ -1,7 +1,6 @@
 package com.ipl.controller.servlet;
 
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.ipl.form.RegisterForm;
 import com.ipl.form.ValidationException;
 import com.ipl.service.RegisterService;
@@ -29,7 +28,6 @@ public class RegisterServlet extends HttpServlet {
 			responseData.setStatus(Response.SUCCESS);
 		} catch (ValidationException e) {
 			responseData.setError(e.getEntity() + " invalid");
-			responseData.setStatus(Response.FAILURE);
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			responseData.setError(e.getMessage());

@@ -21,8 +21,8 @@ public class MatchServlet extends HttpServlet {
 			JsonObject jsonObject = new JsonObject();
 			jsonObject.add("players", ServiceData.playerDetails(Util.todayDateString()));
 			jsonObject.add("teams", ServiceData.teamNames(Util.todayDateString()));
-			responseData.setStatus(Response.SUCCESS);
 			responseData.setData(jsonObject);
+			responseData.setStatus(Response.SUCCESS);
 		}
 		response.getWriter().println(responseData.toJsonObject());
 	}

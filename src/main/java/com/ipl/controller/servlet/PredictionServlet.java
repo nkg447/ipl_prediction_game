@@ -22,18 +22,17 @@ public class PredictionServlet extends HttpServlet {
 		Response responseData = new Response();
 		HttpSession session;
 		if ((session = ServletUtil.sessionAvailable(request, responseData)) != null) {
-			JsonObject jsonObject = new JsonObject();
 			PredictionForm form = ServletUtil.getForm(request, new PredictionForm());
 			try {
 				form.validate();
 				PredictService.predict(form, (String) session.getAttribute("email"));
+				responseData.setStatus(Response.SUCCESS);
 			} catch (ValidationException e) {
 				responseData.setError(e.getEntity() + " invalid");
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 				responseData.setError(e.getMessage());
 			}
-			responseData.setStatus(Response.SUCCESS);
 		}
 		response.getWriter().println(responseData.toJsonObject());
 	}

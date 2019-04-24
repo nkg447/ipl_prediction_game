@@ -28,8 +28,7 @@ public class QuestionsServlet extends HttpServlet {
 			JsonArray questionsArray = new JsonArray();
 
 			List<Question> questions = Service.getQuestions(Util.todayDateString());
-			questions.stream()
-					.forEach(question -> {
+			questions.forEach(question -> {
 						JsonObject object = new JsonObject();
 						object.addProperty("id", question.getId());
 						object.addProperty("question", question.getQuestion());
@@ -39,8 +38,8 @@ public class QuestionsServlet extends HttpServlet {
 
 			jsonObject.add("questions", questionsArray);
 			jsonObject.addProperty("admin", session.getAttribute("email").equals(Predictor.ADMIN_EMAIL));
-			responseData.setStatus(Response.SUCCESS);
 			responseData.setData(jsonObject);
+			responseData.setStatus(Response.SUCCESS);
 		}
 		response.getWriter().println(responseData.toJsonObject());
 	}

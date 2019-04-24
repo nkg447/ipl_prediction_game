@@ -11,7 +11,7 @@ public class Response {
 	static final String FAILURE="FAILURE";
 
 	public Response(){
-		this(null, null, null);
+		this(FAILURE, null, null);
 	}
 
 	public Response(String status, JsonObject data, JsonObject error) {

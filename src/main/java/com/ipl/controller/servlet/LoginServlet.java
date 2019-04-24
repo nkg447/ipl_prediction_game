@@ -18,10 +18,10 @@ public class LoginServlet extends HttpServlet {
 	final static Logger logger = Logger.getLogger(LoginServlet.class);
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		LoginForm form = ServletUtil.getForm(request, new LoginForm());
 		Response responseData = new Response();
 		JsonObject jsonObject = new JsonObject();
 		boolean authenticated = false;
+		LoginForm form = ServletUtil.getForm(request, new LoginForm());
 		try {
 			form.validate();
 			authenticated = AuthService.authenticate(form.getEmail(), form.getPassword());
@@ -29,16 +29,17 @@ public class LoginServlet extends HttpServlet {
 				HttpSession session = request.getSession(true);
 				session.setAttribute("email", form.getEmail());
 			}
+			jsonObject.addProperty("authenticated", authenticated);
+			jsonObject.addProperty("admin", form.getEmail().equals(Predictor.ADMIN_EMAIL));
+			responseData.setData(jsonObject);
+			responseData.setStatus(Response.SUCCESS);
+
 		} catch (ValidationException e) {
 			responseData.setError(e.getEntity() + " invalid");
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			responseData.setError(e.getMessage());
 		}
-		jsonObject.addProperty("authenticated", authenticated);
-		jsonObject.addProperty("admin", form.getEmail().equals(Predictor.ADMIN_EMAIL));
-		responseData.setData(jsonObject);
-		responseData.setStatus(Response.SUCCESS);
 		response.getWriter().println(responseData.toJsonObject());
 	}
 
