@@ -1,16 +1,14 @@
 package com.ipl.framework.validator;
 
-import java.util.regex.Pattern;
-
 public abstract class RegexValidator implements StringValidator {
-	private Pattern pattern;
+	private String regex;
 
 	RegexValidator(String regex) {
-		this.pattern = Pattern.compile(regex);
+		this.regex = regex;
 	}
 
 	@Override
 	public boolean validate(String data) {
-		return false;
+		return data.matches(regex);
 	}
 }
