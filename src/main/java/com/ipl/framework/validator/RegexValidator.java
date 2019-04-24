@@ -2,7 +2,7 @@ package com.ipl.framework.validator;
 
 import java.util.regex.Pattern;
 
-abstract class RegexValidator implements StringValidator {
+public abstract class RegexValidator implements StringValidator {
 	private Pattern pattern;
 
 	RegexValidator(String regex) {
