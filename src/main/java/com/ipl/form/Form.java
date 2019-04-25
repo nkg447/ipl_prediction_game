@@ -14,6 +14,11 @@ abstract public class Form implements Populatable<Form>, Validatable {
 		return "get" + name;
 	}
 
+	private static Object getFieldValue(Field f, Form form) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+		Method fieldGetter = form.getClass().getMethod(getterMethodName(f));
+		return fieldGetter.invoke(form);
+	}
+
 	@Override
 	public boolean isValid() {
 		try {
@@ -47,17 +52,16 @@ abstract public class Form implements Populatable<Form>, Validatable {
 		Class<? extends Validator> validatorClass = validation.validator();
 		Validator validator = (Validator) validatorClass.getMethod("getInstance").invoke(null);
 
-		if (!f.getType().isArray()) {
-			return validateObjectField(f, validator);
-		} else {
+		if (f.getType().isArray()) {
 			return validateArrayField(f, validator);
+		} else {
+			return validateObjectField(f, validator);
 		}
 	}
 
 	private boolean validateArrayField(Field f, Validator validator) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 		Class arrayClass = f.getType().getComponentType();
-		Method fieldGetter = this.getClass().getMethod(getterMethodName(f));
-		Object[] data = (Object[]) fieldGetter.invoke(this);
+		Object[] data = (Object[]) getFieldValue(f, this);
 		for (Object o : data) {
 			if (!validate(o, validator)) return false;
 		}
@@ -65,8 +69,7 @@ abstract public class Form implements Populatable<Form>, Validatable {
 	}
 
 	private boolean validateObjectField(Field f, Validator validator) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-		Method fieldGetter = this.getClass().getMethod(getterMethodName(f));
-		Object data = fieldGetter.invoke(this);
+		Object data = getFieldValue(f, this);
 		return validate(data, validator);
 	}
 
