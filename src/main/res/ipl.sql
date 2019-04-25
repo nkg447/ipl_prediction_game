@@ -80,12 +80,12 @@ CREATE TABLE `predictor` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `questionForm`
+-- Table structure for table `question`
 --
 
-CREATE TABLE `questionForm` (
+CREATE TABLE `question` (
   `id` int(11) NOT NULL,
-  `questionForm` text NOT NULL,
+  `question` text NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `options` mediumtext NOT NULL,
   `type` enum('MULTIPLE_CHOICE','STRING','INTEGER','') NOT NULL,
@@ -126,9 +126,9 @@ ALTER TABLE `predictor`
   ADD UNIQUE KEY `AUTH_ID` (`auth_id`);
 
 --
--- Indexes for table `questionForm`
+-- Indexes for table `question`
 --
-ALTER TABLE `questionForm`
+ALTER TABLE `question`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -160,9 +160,9 @@ ALTER TABLE `predictor`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `questionForm`
+-- AUTO_INCREMENT for table `question`
 --
-ALTER TABLE `questionForm`
+ALTER TABLE `question`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -174,7 +174,7 @@ ALTER TABLE `questionForm`
 --
 ALTER TABLE `answer`
   ADD CONSTRAINT `answer_ibfk_1` FOREIGN KEY (`prediction_id`) REFERENCES `prediction` (`id`),
-  ADD CONSTRAINT `answer_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `questionForm` (`id`);
+  ADD CONSTRAINT `answer_ibfk_2` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`);
 
 --
 -- Constraints for table `prediction`

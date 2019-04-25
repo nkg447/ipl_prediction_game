@@ -9,7 +9,7 @@ function register() {
     password: password
   });
   axios.post("register", jsonData).then(response => {
-    if (response.data.data.authenticated) {
+    if (response.data.data.registered) {
       window.location.replace("/index.html");
     }
   });

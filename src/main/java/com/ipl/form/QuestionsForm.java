@@ -37,7 +37,7 @@ public class QuestionsForm extends Form {
 		}
 
 		this.setDate(date);
-		this.setQuestionForms((QuestionForm[]) questionFormList.toArray());
+		this.setQuestionForms(questionFormList.stream().toArray(QuestionForm[]::new));
 		return this;
 	}
 

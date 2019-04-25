@@ -63,7 +63,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>QuestionsServlet</servlet-name>
-        <url-pattern>/questionForms</url-pattern>
+        <url-pattern>/questions</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PredictionServlet</servlet-name>

@@ -27,7 +27,7 @@ public class PredictionsForm extends Form {
 		for (JsonElement je : jsonElements) {
 			predictionForms.add((PredictionForm) new PredictionForm().populate(je));
 		}
-		this.setPredictionForms((PredictionForm[]) predictionForms.toArray());
+		this.setPredictionForms(predictionForms.stream().toArray(PredictionForm[]::new));
 		return this;
 	}
 
