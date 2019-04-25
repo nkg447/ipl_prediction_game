@@ -14,13 +14,13 @@ import java.util.Set;
 
 public class QuestionsForm extends Form {
 
-	private List<QuestionForm> questionForms;
+	private QuestionForm[] questionForms;
 	private String date;
 
 	public QuestionsForm() {
 	}
 
-	public QuestionsForm(List<QuestionForm> questionForms, String date) {
+	public QuestionsForm(QuestionForm[] questionForms, String date) {
 		this.questionForms = questionForms;
 		this.date = date;
 	}
@@ -37,7 +37,7 @@ public class QuestionsForm extends Form {
 		}
 
 		this.setDate(date);
-		this.setQuestionForms(questionFormList);
+		this.setQuestionForms((QuestionForm[]) questionFormList.toArray());
 		return this;
 	}
 
@@ -51,11 +51,11 @@ public class QuestionsForm extends Form {
 		return true;
 	}
 
-	public List<QuestionForm> getQuestionForms() {
+	public QuestionForm[] getQuestionForms() {
 		return questionForms;
 	}
 
-	public void setQuestionForms(List<QuestionForm> questionForms) {
+	public void setQuestionForms(QuestionForm[] questionForms) {
 		this.questionForms = questionForms;
 	}
 
