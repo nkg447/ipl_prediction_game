@@ -10,7 +10,7 @@ public class DatabaseConnection {
 	private final static Logger logger = Logger.getLogger(DatabaseConnection.class);
 	private static Connection CONNECTION_INSTANCE;
 	private static String DATABASE_URL =
-			(System.getenv("JAWSDB_URL")!=null)?
+			(System.getenv("JAWSDB_URL") != null) ?
 					System.getenv("JAWSDB_URL") :
 					"jdbc:mysql://localhost:3306/ipl?user=root";
 

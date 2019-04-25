@@ -29,12 +29,12 @@ public class QuestionsServlet extends HttpServlet {
 
 			List<Question> questions = Service.getQuestions(Util.todayDateString());
 			questions.forEach(question -> {
-						JsonObject object = new JsonObject();
-						object.addProperty("id", question.getId());
-						object.addProperty("question", question.getQuestion());
-						object.add("options", (PARSER.parse(question.getOptions())));
-						questionsArray.add(object);
-					});
+				JsonObject object = new JsonObject();
+				object.addProperty("id", question.getId());
+				object.addProperty("question", question.getQuestion());
+				object.add("options", (PARSER.parse(question.getOptions())));
+				questionsArray.add(object);
+			});
 
 			jsonObject.add("questions", questionsArray);
 			jsonObject.addProperty("admin", session.getAttribute("email").equals(Predictor.ADMIN_EMAIL));

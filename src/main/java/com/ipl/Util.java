@@ -52,7 +52,7 @@ public class Util {
 
 	public static String getRequestBody(HttpServletRequest request) throws IOException {
 		request.setCharacterEncoding("UTF-8");
-		BufferedReader br=new BufferedReader(request.getReader());
+		BufferedReader br = new BufferedReader(request.getReader());
 		String body = br.lines().collect(Collectors.joining());
 		return body;
 	}

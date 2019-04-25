@@ -18,7 +18,7 @@ public class LeaderboardServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Response responseData = new Response();
 		HttpSession session;
-		if ((session = ServletUtil.sessionAvailable(request,responseData)) != null) {
+		if ((session = ServletUtil.sessionAvailable(request, responseData)) != null) {
 			JsonObject jsonObject = new JsonObject();
 			JsonArray predictorsArray = new JsonArray();
 			List<Predictor> predictors = PredictorDAO.getAllPredictors();
@@ -28,7 +28,7 @@ public class LeaderboardServlet extends HttpServlet {
 					.forEach(predictor -> {
 						JsonObject object = new JsonObject();
 						object.addProperty("name", predictor.getName());
-						object.addProperty("score",predictor.getScore());
+						object.addProperty("score", predictor.getScore());
 						predictorsArray.add(object);
 					});
 

@@ -8,6 +8,12 @@ import java.lang.reflect.Method;
 
 abstract public class Form implements Populatable<Form>, Validatable {
 
+	private static String getterMethodName(Field f) {
+		String name = f.getName();
+		name = name.substring(0, 1).toUpperCase() + name.substring(1);
+		return "get" + name;
+	}
+
 	@Override
 	public boolean isValid() {
 		try {
@@ -66,11 +72,5 @@ abstract public class Form implements Populatable<Form>, Validatable {
 
 	private boolean validate(Object data, Validator validator) {
 		return validator.validate(data);
-	}
-
-	private static String getterMethodName(Field f) {
-		String name = f.getName();
-		name = name.substring(0, 1).toUpperCase() + name.substring(1);
-		return "get" + name;
 	}
 }

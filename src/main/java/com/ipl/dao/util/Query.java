@@ -2,7 +2,10 @@ package com.ipl.dao.util;
 
 import org.apache.log4j.Logger;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Query {
 	private final static Logger logger = Logger.getLogger(Query.class);

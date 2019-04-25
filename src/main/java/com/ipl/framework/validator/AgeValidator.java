@@ -9,7 +9,7 @@ public final class AgeValidator extends NumberRangeValidator<Integer> {
 		super(min, max);
 	}
 
-	public static AgeValidator getInstance(){
+	public static AgeValidator getInstance() {
 		return INSTANCE;
 	}
 }

@@ -3,14 +3,13 @@ package com.ipl.controller.servlet;
 import com.google.gson.JsonObject;
 
 public class Response {
+	static final String SUCCESS = "SUCCESS";
+	static final String FAILURE = "FAILURE";
 	private String status;
 	private JsonObject data;
 	private JsonObject error;
 
-	static final String SUCCESS="SUCCESS";
-	static final String FAILURE="FAILURE";
-
-	public Response(){
+	public Response() {
 		this(FAILURE, null, null);
 	}
 
@@ -44,17 +43,17 @@ public class Response {
 		this.error = error;
 	}
 
-	JsonObject toJsonObject(){
+	public void setError(String message) {
+		JsonObject error = new JsonObject();
+		error.addProperty("message", message);
+		setError(error);
+	}
+
+	JsonObject toJsonObject() {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("status", status);
 		jsonObject.add("data", data);
 		jsonObject.add("error", error);
 		return jsonObject;
-	}
-
-	public void setError(String message) {
-		JsonObject error = new JsonObject();
-		error.addProperty("message", message);
-		setError(error);
 	}
 }

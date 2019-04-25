@@ -5,8 +5,9 @@ public enum QuestionType {
 	STRING("STRING"),
 	INTEGER("INTEGER");
 	private String type;
-	QuestionType(String type){
-		this.type=type;
+
+	QuestionType(String type) {
+		this.type = type;
 	}
 
 	public String getType() {

@@ -6,7 +6,6 @@ import com.ipl.dao.util.Query;
 import com.ipl.dao.util.Update;
 import com.ipl.model.entity.ModelUtil;
 import com.ipl.model.entity.Question;
-import com.ipl.model.entity.QuestionType;
 import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;

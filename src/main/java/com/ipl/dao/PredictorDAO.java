@@ -4,7 +4,6 @@ import com.ipl.dao.util.DatabaseConnection;
 import com.ipl.dao.util.DatabaseInfo;
 import com.ipl.dao.util.Query;
 import com.ipl.dao.util.Update;
-import com.ipl.model.entity.Authentication;
 import com.ipl.model.entity.Predictor;
 import com.ipl.model.entity.Status;
 import org.apache.log4j.Logger;
@@ -78,7 +77,7 @@ public class PredictorDAO {
 
 	public static Predictor getPredictorByEmail(String email) {
 		return getAllPredictors("WHERE " +
-				"AUTH_ID=(select id from authentication where email='"+email+"')")
+				"AUTH_ID=(select id from authentication where email='" + email + "')")
 				.remove(0);
 	}
 

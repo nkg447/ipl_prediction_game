@@ -1,6 +1,5 @@
 package com.ipl.controller.listener;
 
-import com.ipl.dao.*;
 import com.ipl.dao.util.DatabaseConnection;
 import com.ipl.service.ServiceData;
 
@@ -8,9 +7,9 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.http.HttpSessionAttributeListener;
+import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-import javax.servlet.http.HttpSessionBindingEvent;
 import java.sql.SQLException;
 
 public class OnStartListener implements ServletContextListener,
@@ -24,7 +23,7 @@ public class OnStartListener implements ServletContextListener,
 	// ServletContextListener implementation
 	// -------------------------------------------------------
 	public void contextInitialized(ServletContextEvent sce) {
-		ServletContext context=sce.getServletContext();
+		ServletContext context = sce.getServletContext();
 		createDatabaseConnection(context);
 		new ServiceData().run();
 	}
