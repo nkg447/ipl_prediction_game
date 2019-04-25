@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class QuestionsForm extends Form{
+public class QuestionsForm extends Form {
 
 	private List<Question> questions;
 	private String date;
@@ -20,13 +20,6 @@ public class QuestionsForm extends Form{
 	public QuestionsForm(List<Question> questions, String date) {
 		this.questions = questions;
 		this.date = date;
-	}
-
-	@Override
-	public void validate() throws ValidationException {
-		for(Question question : questions)
-			question.validate();
-		FormUtil.validateDate(date);
 	}
 
 	@Override
@@ -70,7 +63,7 @@ public class QuestionsForm extends Form{
 		this.date = date;
 	}
 
-	public static class Question implements Validatable{
+	public static class Question {
 		private String question;
 		private String type;
 		private Set<String> options;
@@ -97,16 +90,6 @@ public class QuestionsForm extends Form{
 
 		public int getPoints() {
 			return points;
-		}
-
-		@Override
-		public void validate() throws ValidationException {
-			FormUtil.validateQuestion(question);
-			for(String option : options){
-				FormUtil.validateOption(option);
-			}
-			FormUtil.validatePoints(points);
-			FormUtil.validateType(type);
 		}
 	}
 }

@@ -2,7 +2,6 @@ package com.ipl.controller.servlet;
 
 import com.google.gson.JsonObject;
 import com.ipl.form.LoginForm;
-import com.ipl.form.ValidationException;
 import com.ipl.model.entity.Predictor;
 import com.ipl.service.AuthService;
 import org.apache.log4j.Logger;
@@ -23,7 +22,7 @@ public class LoginServlet extends HttpServlet {
 		boolean authenticated = false;
 		LoginForm form = ServletUtil.getForm(request, new LoginForm());
 		try {
-			form.validate();
+//			form.validate();
 			authenticated = AuthService.authenticate(form.getEmail(), form.getPassword());
 			if (authenticated) {
 				HttpSession session = request.getSession(true);
@@ -34,8 +33,6 @@ public class LoginServlet extends HttpServlet {
 			responseData.setData(jsonObject);
 			responseData.setStatus(Response.SUCCESS);
 
-		} catch (ValidationException e) {
-			responseData.setError(e.getEntity() + " invalid");
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			responseData.setError(e.getMessage());

@@ -18,13 +18,6 @@ public class RegisterForm extends Form {
 	}
 
 	@Override
-	public void validate() throws ValidationException {
-		FormUtil.validateEmail(getEmail());
-		FormUtil.validateName(getName());
-		FormUtil.validatePassword(getPassword());
-	}
-
-	@Override
 	public Form populate(JsonElement data) {
 		JsonObject jsonObject = data.getAsJsonObject();
 		this.setEmail(jsonObject.get("email").getAsString());

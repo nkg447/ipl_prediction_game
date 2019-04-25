@@ -1,9 +1,6 @@
 package com.ipl.controller.servlet;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.ipl.form.PredictionForm;
-import com.ipl.form.ValidationException;
 import com.ipl.service.PredictService;
 import org.apache.log4j.Logger;
 
@@ -24,11 +21,9 @@ public class PredictionServlet extends HttpServlet {
 		if ((session = ServletUtil.sessionAvailable(request, responseData)) != null) {
 			PredictionForm form = ServletUtil.getForm(request, new PredictionForm());
 			try {
-				form.validate();
+//				form.validate();
 				PredictService.predict(form, (String) session.getAttribute("email"));
 				responseData.setStatus(Response.SUCCESS);
-			} catch (ValidationException e) {
-				responseData.setError(e.getEntity() + " invalid");
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 				responseData.setError(e.getMessage());

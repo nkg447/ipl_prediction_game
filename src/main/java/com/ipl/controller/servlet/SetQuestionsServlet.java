@@ -1,7 +1,6 @@
 package com.ipl.controller.servlet;
 
 import com.ipl.form.QuestionsForm;
-import com.ipl.form.ValidationException;
 import com.ipl.model.entity.Predictor;
 import com.ipl.service.SetQuestionService;
 import org.apache.log4j.Logger;
@@ -24,11 +23,9 @@ public class SetQuestionsServlet extends HttpServlet {
 			QuestionsForm form = ServletUtil.getForm(request, new QuestionsForm());
 
 			try {
-				form.validate();
+//				form.validate();
 				SetQuestionService.setQuestions(form);
 				responseData.setStatus(Response.SUCCESS);
-			} catch (ValidationException e) {
-				responseData.setError(e.getEntity() + " invalid");
 			} catch (Exception e) {
 				logger.error(e.getMessage(), e);
 				responseData.setError(e.getMessage());

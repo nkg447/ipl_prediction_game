@@ -17,12 +17,6 @@ public class LoginForm extends Form {
 	}
 
 	@Override
-	public void validate() throws ValidationException {
-		FormUtil.validateEmail(email);
-		FormUtil.validatePassword(password);
-	}
-
-	@Override
 	public Form populate(JsonElement data) {
 		JsonObject jsonObject = data.getAsJsonObject();
 		this.setEmail(jsonObject.get("email").getAsString());

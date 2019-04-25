@@ -6,7 +6,7 @@ import com.google.gson.JsonElement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PredictionForm extends Form{
+public class PredictionForm extends Form {
 
 	private List<Prediction> predictions;
 
@@ -15,13 +15,6 @@ public class PredictionForm extends Form{
 
 	public PredictionForm(List<Prediction> predictions) {
 		this.predictions = predictions;
-	}
-
-	@Override
-	public void validate() throws ValidationException {
-		for (Prediction prediction : predictions) {
-			prediction.validate();
-		}
 	}
 
 	@Override
@@ -52,7 +45,7 @@ public class PredictionForm extends Form{
 		this.predictions = predictions;
 	}
 
-	public static class Prediction implements Validatable {
+	public static class Prediction {
 		private int questionId;
 		private String answer;
 
@@ -67,12 +60,6 @@ public class PredictionForm extends Form{
 
 		public String getAnswer() {
 			return answer;
-		}
-
-		@Override
-		public void validate() throws ValidationException {
-			FormUtil.validateAnswer(answer);
-			FormUtil.validateId(questionId);
 		}
 	}
 }
