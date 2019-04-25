@@ -8,21 +8,22 @@
     <link rel="stylesheet" href="styles/index.css" />
   </head>
   <body>
-    <form class="form" action="/register" method="POST">
+    <div class="form">
       <h3>Registration Form</h3>
 
-      <input required type="text" name="name" placeholder="Name" />
+      <input required type="text" id="name" placeholder="Name" />
 
-      <input required type="email" name="email" placeholder="Email" />
+      <input required type="email" id="email" placeholder="Email" />
 
-      <input required type="password" name="pwd" placeholder="Password" />
+      <input required type="password" id="pwd" placeholder="Password" />
 
-      <span>
-      <button type="submit" class="btn btn-primary">
+      <button onclick="register()" class="btn btn-primary">
         Register
       </button>
 
       <p class="message">Already registered? <a href="index.html">Login</a></p>
-    </form>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="scripts/register.js"></script>
   </body>
 </html>
