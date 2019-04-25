@@ -8,6 +8,8 @@ import java.lang.reflect.Method;
 
 abstract public class Form implements Populatable<Form>, Validatable {
 
+	private String invalidEntity;
+
 	private static String getterMethodName(Field f) {
 		String name = f.getName();
 		name = name.substring(0, 1).toUpperCase() + name.substring(1);
@@ -19,13 +21,22 @@ abstract public class Form implements Populatable<Form>, Validatable {
 		return fieldGetter.invoke(form);
 	}
 
-	private static boolean isValidatable(Field f) {
-		return Validatable.class.isAssignableFrom(f.getType());
+	private static boolean isForm(Field f) {
+		return Form.class.isAssignableFrom(f.getType());
 	}
 
-	private static boolean isValidatableArray(Field f) {
+	private static boolean isFormArray(Field f) {
 		Class arrayClass = f.getType().getComponentType();
-		return Validatable.class.isAssignableFrom(arrayClass);
+		return Form.class.isAssignableFrom(arrayClass);
+	}
+
+	public String getInvalidEntity() {
+		return invalidEntity;
+	}
+
+	public Form setInvalidEntity(String invalidEntity) {
+		this.invalidEntity = invalidEntity;
+		return this;
 	}
 
 	@Override
@@ -58,12 +69,12 @@ abstract public class Form implements Populatable<Form>, Validatable {
 		Validation validation = f.getAnnotation(Validation.class);
 		if (validation == null) {
 			if (f.getType().isArray()) {
-				return isValidatableArray(f) && validateValidatableArray(f);
+				return isFormArray(f) && validateFormArray(f);
 			} else {
-				return isValidatable(f) && validateValidatableObject(f);
+				return isForm(f) && validateFormObject(f);
 			}
 		}
-
+		setInvalidEntity(validation.name());
 		Class<? extends Validator> validatorClass = validation.validator();
 		Validator validator = (Validator) validatorClass.getMethod("getInstance").invoke(null);
 
@@ -74,15 +85,23 @@ abstract public class Form implements Populatable<Form>, Validatable {
 		}
 	}
 
-	private boolean validateValidatableObject(Field f) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		Validatable validatable = (Validatable) getFieldValue(f, this);
-		return validatable.isValid();
+	private boolean validateFormObject(Field f) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		Form form = (Form) getFieldValue(f, this);
+		return isFormValid(form);
 	}
 
-	private boolean validateValidatableArray(Field f) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		Validatable[] validatables = (Validatable[]) getFieldValue(f, this);
-		for (Validatable validatable : validatables) {
-			if (!validatable.isValid()) return false;
+	private boolean isFormValid(Form form) {
+		if (!form.isValid()) {
+			setInvalidEntity(form.getInvalidEntity());
+			return false;
+		}
+		return true;
+	}
+
+	private boolean validateFormArray(Field f) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		Form[] forms = (Form[]) getFieldValue(f, this);
+		for (Form form : forms) {
+			if (!isFormValid(form)) return false;
 		}
 		return true;
 	}
