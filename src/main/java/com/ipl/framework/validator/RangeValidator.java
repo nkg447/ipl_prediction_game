@@ -11,8 +11,8 @@ public abstract class RangeValidator<T extends Comparable> implements Validator<
 
 	@Override
 	public boolean validate(T data) {
-		return ((min == null || min.compareTo(data) >= 0) &&
-				(max == null || data.compareTo(max) >= 0)
+		return ((min == null || data.compareTo(min) >= 0) &&
+				(max == null || max.compareTo(data) >= 0)
 		);
 	}
 }
