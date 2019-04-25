@@ -41,16 +41,6 @@ public class QuestionsForm extends Form {
 		return this;
 	}
 
-	@Override
-	public boolean isValid() {
-		if (!super.isValid()) return false;
-		for (QuestionForm questionForm : questionForms) {
-			if (!questionForm.isValid())
-				return false;
-		}
-		return true;
-	}
-
 	public QuestionForm[] getQuestionForms() {
 		return questionForms;
 	}

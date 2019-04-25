@@ -19,6 +19,15 @@ abstract public class Form implements Populatable<Form>, Validatable {
 		return fieldGetter.invoke(form);
 	}
 
+	private static boolean isValidatable(Field f) {
+		return Validatable.class.isAssignableFrom(f.getType());
+	}
+
+	private static boolean isValidatableArray(Field f) {
+		Class arrayClass = f.getType().getComponentType();
+		return Validatable.class.isAssignableFrom(arrayClass);
+	}
+
 	@Override
 	public boolean isValid() {
 		try {
@@ -47,7 +56,13 @@ abstract public class Form implements Populatable<Form>, Validatable {
 
 	private boolean validate(Field f) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 		Validation validation = f.getAnnotation(Validation.class);
-		if (validation == null) return true;
+		if (validation == null) {
+			if (f.getType().isArray()) {
+				return isValidatableArray(f) && validateValidatableArray(f);
+			} else {
+				return isValidatable(f) && validateValidatableObject(f);
+			}
+		}
 
 		Class<? extends Validator> validatorClass = validation.validator();
 		Validator validator = (Validator) validatorClass.getMethod("getInstance").invoke(null);
@@ -59,8 +74,20 @@ abstract public class Form implements Populatable<Form>, Validatable {
 		}
 	}
 
+	private boolean validateValidatableObject(Field f) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		Validatable validatable = (Validatable) getFieldValue(f, this);
+		return validatable.isValid();
+	}
+
+	private boolean validateValidatableArray(Field f) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		Validatable[] validatables = (Validatable[]) getFieldValue(f, this);
+		for (Validatable validatable : validatables) {
+			if (!validatable.isValid()) return false;
+		}
+		return true;
+	}
+
 	private boolean validateArrayField(Field f, Validator validator) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-		Class arrayClass = f.getType().getComponentType();
 		Object[] data = (Object[]) getFieldValue(f, this);
 		for (Object o : data) {
 			if (!validate(o, validator)) return false;
@@ -74,6 +101,11 @@ abstract public class Form implements Populatable<Form>, Validatable {
 	}
 
 	private boolean validate(Object data, Validator validator) {
-		return validator.validate(data);
+		try {
+			return validator.validate(data);
+		} catch (ClassCastException e) {
+			e.printStackTrace();
+			return true;
+		}
 	}
 }

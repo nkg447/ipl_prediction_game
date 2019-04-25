@@ -31,16 +31,6 @@ public class PredictionsForm extends Form {
 		return this;
 	}
 
-	@Override
-	public boolean isValid() {
-		if (!super.isValid()) return false;
-		for (PredictionForm predictionForm : predictionForms) {
-			if (!predictionForm.isValid())
-				return false;
-		}
-		return true;
-	}
-
 	public PredictionForm[] getPredictionForms() {
 		return predictionForms;
 	}
