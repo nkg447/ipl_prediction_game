@@ -43,17 +43,13 @@ abstract public class Form implements Populatable<Form>, Validatable {
 	public boolean isValid() {
 		try {
 			return validateUsingReflection();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
+		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return true;
 	}
 
-	public boolean validateUsingReflection() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+	private boolean validateUsingReflection() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		Class validator = this.getClass();
 		Field[] fields = validator.getDeclaredFields();
 
@@ -69,10 +65,11 @@ abstract public class Form implements Populatable<Form>, Validatable {
 		Validation validation = f.getAnnotation(Validation.class);
 		if (validation == null) {
 			if (f.getType().isArray()) {
-				return isFormArray(f) && validateFormArray(f);
+				if (isFormArray(f)) return validateFormArray(f);
 			} else {
-				return isForm(f) && validateFormObject(f);
+				if (isForm(f)) return validateFormObject(f);
 			}
+			return true;
 		}
 		setInvalidEntity(validation.name());
 		Class<? extends Validator> validatorClass = validation.validator();
