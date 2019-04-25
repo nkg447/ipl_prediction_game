@@ -2,10 +2,16 @@ package com.ipl.form;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.ipl.framework.validator.EmailValidator;
+import com.ipl.framework.validator.PasswordValidator;
+import com.ipl.framework.validator.TextValidator;
 
 public class RegisterForm extends Form {
+	@Validation(name = "name", validator = TextValidator.class)
 	private String name;
+	@Validation(name = "email", validator = EmailValidator.class)
 	private String email;
+	@Validation(name = "password", validator = PasswordValidator.class)
 	private String password;
 
 	public RegisterForm() {

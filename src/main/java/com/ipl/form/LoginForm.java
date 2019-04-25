@@ -2,9 +2,13 @@ package com.ipl.form;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.ipl.framework.validator.EmailValidator;
+import com.ipl.framework.validator.PasswordValidator;
 
 public class LoginForm extends Form {
+	@Validation(name = "email", validator = EmailValidator.class)
 	private String email;
+	@Validation(name = "password", validator = PasswordValidator.class)
 	private String password;
 
 	public LoginForm() {

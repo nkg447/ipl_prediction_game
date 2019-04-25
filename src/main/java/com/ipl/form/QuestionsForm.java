@@ -3,6 +3,9 @@ package com.ipl.form;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.ipl.framework.validator.PositiveNumberValidator;
+import com.ipl.framework.validator.QuestionValidator;
+import com.ipl.framework.validator.TextValidator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,13 +33,22 @@ public class QuestionsForm extends Form {
 
 		JsonArray questions = jsonObject.getAsJsonArray("questionForms");
 		for (JsonElement question : questions) {
-
 			questionFormList.add((QuestionForm) new QuestionForm().populate(question));
 		}
 
 		this.setDate(date);
 		this.setQuestionForms(questionFormList);
 		return this;
+	}
+
+	@Override
+	public boolean isValid() {
+		if (!super.isValid()) return false;
+		for (QuestionForm questionForm : questionForms) {
+			if (!questionForm.isValid())
+				return false;
+		}
+		return true;
 	}
 
 	public List<QuestionForm> getQuestionForms() {
@@ -56,15 +68,18 @@ public class QuestionsForm extends Form {
 	}
 
 	public static class QuestionForm extends Form {
+		@Validation(name = "question", validator = QuestionValidator.class)
 		private String question;
 		private String type;
-		private Set<String> options;
+		@Validation(name = "option", validator = TextValidator.class)
+		private String[] options;
+		@Validation(name = "points", validator = PositiveNumberValidator.class)
 		private int points;
 
 		public QuestionForm() {
 		}
 
-		public QuestionForm(String question, String type, Set<String> options, int points) {
+		public QuestionForm(String question, String type, String[] options, int points) {
 			this.question = question;
 			this.type = type;
 			this.options = options;
@@ -79,7 +94,7 @@ public class QuestionsForm extends Form {
 			return type;
 		}
 
-		public Set<String> getOptions() {
+		public String[] getOptions() {
 			return options;
 		}
 
@@ -96,7 +111,7 @@ public class QuestionsForm extends Form {
 			return new QuestionForm(
 					data.getAsJsonObject().get("question").getAsString(),
 					data.getAsJsonObject().get("type").getAsString(),
-					options,
+					options.stream().toArray(String[]::new),
 					data.getAsJsonObject().get("points").getAsInt()
 			);
 		}

@@ -2,18 +2,20 @@ package com.ipl.form;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.ipl.framework.validator.IdValidator;
+import com.ipl.framework.validator.TextValidator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PredictionsForm extends Form {
 
-	private List<PredictionForm> predictionForms;
+	private PredictionForm[] predictionForms;
 
 	public PredictionsForm() {
 	}
 
-	public PredictionsForm(List<PredictionForm> predictionForms) {
+	public PredictionsForm(PredictionForm[] predictionForms) {
 		this.predictionForms = predictionForms;
 	}
 
@@ -25,20 +27,32 @@ public class PredictionsForm extends Form {
 		for (JsonElement je : jsonElements) {
 			predictionForms.add((PredictionForm) new PredictionForm().populate(je));
 		}
-		this.setPredictionForms(predictionForms);
+		this.setPredictionForms((PredictionForm[]) predictionForms.toArray());
 		return this;
 	}
 
-	public List<PredictionForm> getPredictionForms() {
+	@Override
+	public boolean isValid() {
+		if (!super.isValid()) return false;
+		for (PredictionForm predictionForm : predictionForms) {
+			if (!predictionForm.isValid())
+				return false;
+		}
+		return true;
+	}
+
+	public PredictionForm[] getPredictionForms() {
 		return predictionForms;
 	}
 
-	public void setPredictionForms(List<PredictionForm> predictionForms) {
+	public void setPredictionForms(PredictionForm[] predictionForms) {
 		this.predictionForms = predictionForms;
 	}
 
 	public static class PredictionForm extends Form {
+		@Validation(name = "question-id", validator = IdValidator.class)
 		private int questionId;
+		@Validation(name = "answer", validator = TextValidator.class)
 		private String answer;
 
 		public PredictionForm() {
