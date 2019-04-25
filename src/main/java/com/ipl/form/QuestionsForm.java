@@ -11,14 +11,14 @@ import java.util.Set;
 
 public class QuestionsForm extends Form {
 
-	private List<Question> questions;
+	private List<QuestionForm> questionForms;
 	private String date;
 
 	public QuestionsForm() {
 	}
 
-	public QuestionsForm(List<Question> questions, String date) {
-		this.questions = questions;
+	public QuestionsForm(List<QuestionForm> questionForms, String date) {
+		this.questionForms = questionForms;
 		this.date = date;
 	}
 
@@ -26,33 +26,25 @@ public class QuestionsForm extends Form {
 	public Form populate(JsonElement data) {
 		JsonObject jsonObject = data.getAsJsonObject();
 		String date = jsonObject.get("date").getAsString();
-		List<QuestionsForm.Question> questionList = new ArrayList<>();
+		List<QuestionForm> questionFormList = new ArrayList<>();
 
-		JsonArray questions = jsonObject.getAsJsonArray("questions");
+		JsonArray questions = jsonObject.getAsJsonArray("questionForms");
 		for (JsonElement question : questions) {
-			Set<String> options = new HashSet<>();
-			for (JsonElement option : question.getAsJsonObject().getAsJsonArray("options")) {
-				options.add(option.getAsString());
-			}
-			questionList.add(new QuestionsForm.Question(
-					question.getAsJsonObject().get("question").getAsString(),
-					question.getAsJsonObject().get("type").getAsString(),
-					options,
-					question.getAsJsonObject().get("points").getAsInt()
-			));
+
+			questionFormList.add((QuestionForm) new QuestionForm().populate(question));
 		}
 
 		this.setDate(date);
-		this.setQuestions(questionList);
+		this.setQuestionForms(questionFormList);
 		return this;
 	}
 
-	public List<Question> getQuestions() {
-		return questions;
+	public List<QuestionForm> getQuestionForms() {
+		return questionForms;
 	}
 
-	public void setQuestions(List<Question> questions) {
-		this.questions = questions;
+	public void setQuestionForms(List<QuestionForm> questionForms) {
+		this.questionForms = questionForms;
 	}
 
 	public String getDate() {
@@ -63,13 +55,16 @@ public class QuestionsForm extends Form {
 		this.date = date;
 	}
 
-	public static class Question {
+	public static class QuestionForm extends Form {
 		private String question;
 		private String type;
 		private Set<String> options;
 		private int points;
 
-		public Question(String question, String type, Set<String> options, int points) {
+		public QuestionForm() {
+		}
+
+		public QuestionForm(String question, String type, Set<String> options, int points) {
 			this.question = question;
 			this.type = type;
 			this.options = options;
@@ -90,6 +85,20 @@ public class QuestionsForm extends Form {
 
 		public int getPoints() {
 			return points;
+		}
+
+		@Override
+		public Form populate(JsonElement data) {
+			Set<String> options = new HashSet<>();
+			for (JsonElement option : data.getAsJsonObject().getAsJsonArray("options")) {
+				options.add(option.getAsString());
+			}
+			return new QuestionForm(
+					data.getAsJsonObject().get("question").getAsString(),
+					data.getAsJsonObject().get("type").getAsString(),
+					options,
+					data.getAsJsonObject().get("points").getAsInt()
+			);
 		}
 	}
 }

@@ -9,13 +9,13 @@ import java.sql.SQLException;
 
 public class SetQuestionService {
 	public static void setQuestions(QuestionsForm form) throws SQLException {
-		for (QuestionsForm.Question question : form.getQuestions()) {
+		for (QuestionsForm.QuestionForm questionForm : form.getQuestionForms()) {
 			QuestionDAO.save(new Question(
-					question.getQuestion(),
+					questionForm.getQuestion(),
 					form.getDate(),
-					question.getOptions().toString(),
-					ModelUtil.questionTypeToEnum(question.getType()),
-					question.getPoints()
+					questionForm.getOptions().toString(),
+					ModelUtil.questionTypeToEnum(questionForm.getType()),
+					questionForm.getPoints()
 			));
 		}
 	}
