@@ -50,8 +50,8 @@ abstract public class Form implements Populatable<Form>, Validatable {
 	}
 
 	private boolean validateUsingReflection() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		Class validator = this.getClass();
-		Field[] fields = validator.getDeclaredFields();
+		Class<? extends Form> form = this.getClass();
+		Field[] fields = form.getDeclaredFields();
 
 		for (Field f : fields) {
 			if (!validate(f)) {
