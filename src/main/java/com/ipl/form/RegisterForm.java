@@ -2,8 +2,12 @@ package com.ipl.form;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.ipl.framework.validator.EmailValidator;
+import com.ipl.framework.validator.PasswordValidator;
 
 public class RegisterForm extends Form {
+	private static final EmailValidator EMAIL_VALIDATOR = new EmailValidator();
+	private static final PasswordValidator PASSWORD_VALIDATOR = new PasswordValidator();
 	private String name;
 	private String email;
 	private String password;
@@ -51,6 +55,7 @@ public class RegisterForm extends Form {
 
 	@Override
 	public boolean isValid() {
-		return false;
+		return EMAIL_VALIDATOR.validate(email) &&
+				PASSWORD_VALIDATOR.validate(password);
 	}
 }

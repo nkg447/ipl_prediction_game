@@ -3,6 +3,8 @@ package com.ipl.form;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.ipl.framework.validator.DateValidator;
+import com.ipl.framework.validator.QuestionValidator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,6 +13,7 @@ import java.util.Set;
 
 public class QuestionsForm extends Form {
 
+	private static final DateValidator DATE_VALIDATOR = new DateValidator("yyyy-mm-dd");
 	private List<Question> questions;
 	private String date;
 
@@ -48,7 +51,11 @@ public class QuestionsForm extends Form {
 
 	@Override
 	public boolean isValid() {
-		return false;
+		return DATE_VALIDATOR.validate(date) &&
+				questions.stream()
+						.map(Question::isValid)
+						.reduce((a, b) -> a && b)
+						.get();
 	}
 
 	public List<Question> getQuestions() {
@@ -67,7 +74,8 @@ public class QuestionsForm extends Form {
 		this.date = date;
 	}
 
-	public static class Question {
+	public static class Question implements Validatable {
+		private static final QuestionValidator QUESTION_VALIDATOR = new QuestionValidator();
 		private String question;
 		private String type;
 		private Set<String> options;
@@ -94,6 +102,20 @@ public class QuestionsForm extends Form {
 
 		public int getPoints() {
 			return points;
+		}
+
+		@Override
+		public boolean isValid() {
+			return validateType(type) &&
+					QUESTION_VALIDATOR.validate(question) &&
+					points > 0 &&
+					((!type.equals("MULTIPLE_CHOICE")) || options.size() > 0);
+		}
+
+		private boolean validateType(String type) {
+			return type.equals("MULTIPLE_CHOICE") ||
+					type.equals("INTEGER") ||
+					type.equals("STRING");
 		}
 	}
 }

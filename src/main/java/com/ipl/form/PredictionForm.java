@@ -46,10 +46,12 @@ public class PredictionForm extends Form {
 
 	@Override
 	public boolean isValid() {
-		return false;
+		for (Prediction prediction : predictions)
+			if (!prediction.isValid()) return false;
+		return true;
 	}
 
-	public static class Prediction {
+	public static class Prediction implements Validatable {
 		private int questionId;
 		private String answer;
 
@@ -64,6 +66,12 @@ public class PredictionForm extends Form {
 
 		public String getAnswer() {
 			return answer;
+		}
+
+		@Override
+		public boolean isValid() {
+			return questionId > 0 &&
+					answer.length() > 0;
 		}
 	}
 }
