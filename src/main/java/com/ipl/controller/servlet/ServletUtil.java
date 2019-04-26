@@ -25,9 +25,9 @@ public class ServletUtil {
 		return session;
 	}
 
-	public static <T extends Form> T getForm(HttpServletRequest request, T form) throws IOException {
+	public static <T extends Form> void getForm(HttpServletRequest request, T form) throws IOException {
 		String body = Util.getRequestBody(request);
 		JsonElement jsonBody = PARSER.parse(body);
-		return (T) form.populate(jsonBody);
+		form.populate(jsonBody);
 	}
 }

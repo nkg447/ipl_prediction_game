@@ -20,7 +20,8 @@ public class SetQuestionsServlet extends HttpServlet {
 		HttpSession session;
 		if ((session = ServletUtil.sessionAvailable(request, responseData)) != null &&
 				session.getAttribute("email").equals(Predictor.ADMIN_EMAIL)) {
-			QuestionsForm form = ServletUtil.getForm(request, new QuestionsForm());
+			QuestionsForm form = new QuestionsForm();
+			ServletUtil.getForm(request, form);
 
 			try {
 //				form.validate();

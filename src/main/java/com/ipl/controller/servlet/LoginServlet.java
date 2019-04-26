@@ -20,7 +20,8 @@ public class LoginServlet extends HttpServlet {
 		Response responseData = new Response();
 		JsonObject jsonObject = new JsonObject();
 		boolean authenticated = false;
-		LoginForm form = ServletUtil.getForm(request, new LoginForm());
+		LoginForm form = new LoginForm();
+		ServletUtil.getForm(request, form);
 		try {
 //			form.validate();
 			authenticated = AuthService.authenticate(form.getEmail(), form.getPassword());

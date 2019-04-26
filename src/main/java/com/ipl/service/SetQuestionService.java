@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class SetQuestionService {
 	public static void setQuestions(QuestionsForm form) throws SQLException {
-		for (QuestionsForm.QuestionForm questionForm : form.getQuestionForms()) {
+		for (QuestionsForm.Question questionForm : form.getQuestions()) {
 			QuestionDAO.save(new Question(
 					questionForm.getQuestion(),
 					form.getDate(),

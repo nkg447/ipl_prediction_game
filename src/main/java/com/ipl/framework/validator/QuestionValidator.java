@@ -1,15 +1,12 @@
 package com.ipl.framework.validator;
 
-public class QuestionValidator extends RegexValidator {
+public class QuestionValidator implements Validator<String> {
 
 	private static final String PATTERN = "([a-zA-Z]+)(.*)(\\?)";
-	private static final QuestionValidator INSTANCE = new QuestionValidator(PATTERN);
+	private static final RegexValidator VALIDATOR = new RegexValidator(PATTERN);
 
-	QuestionValidator(String regex) {
-		super(regex);
-	}
-
-	public static QuestionValidator getInstance() {
-		return INSTANCE;
+	@Override
+	public boolean validate(String data) {
+		return VALIDATOR.validate(data);
 	}
 }

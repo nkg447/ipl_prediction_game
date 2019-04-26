@@ -3,9 +3,6 @@ package com.ipl.form;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.ipl.framework.validator.PositiveNumberValidator;
-import com.ipl.framework.validator.QuestionValidator;
-import com.ipl.framework.validator.TextValidator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,39 +11,52 @@ import java.util.Set;
 
 public class QuestionsForm extends Form {
 
-	private QuestionForm[] questionForms;
+	private List<Question> questions;
 	private String date;
 
 	public QuestionsForm() {
 	}
 
-	public QuestionsForm(QuestionForm[] questionForms, String date) {
-		this.questionForms = questionForms;
+	public QuestionsForm(List<Question> questions, String date) {
+		this.questions = questions;
 		this.date = date;
 	}
 
 	@Override
-	public Form populate(JsonElement data) {
+	public void populate(JsonElement data) {
 		JsonObject jsonObject = data.getAsJsonObject();
 		String date = jsonObject.get("date").getAsString();
-		List<QuestionForm> questionFormList = new ArrayList<>();
+		List<QuestionsForm.Question> questionList = new ArrayList<>();
 
-		JsonArray questions = jsonObject.getAsJsonArray("questionForms");
+		JsonArray questions = jsonObject.getAsJsonArray("questions");
 		for (JsonElement question : questions) {
-			questionFormList.add((QuestionForm) new QuestionForm().populate(question));
+			Set<String> options = new HashSet<>();
+			for (JsonElement option : question.getAsJsonObject().getAsJsonArray("options")) {
+				options.add(option.getAsString());
+			}
+			questionList.add(new QuestionsForm.Question(
+					question.getAsJsonObject().get("question").getAsString(),
+					question.getAsJsonObject().get("type").getAsString(),
+					options,
+					question.getAsJsonObject().get("points").getAsInt()
+			));
 		}
 
 		this.setDate(date);
-		this.setQuestionForms(questionFormList.stream().toArray(QuestionForm[]::new));
-		return this;
+		this.setQuestions(questionList);
 	}
 
-	public QuestionForm[] getQuestionForms() {
-		return questionForms;
+	@Override
+	public boolean isValid() {
+		return false;
 	}
 
-	public void setQuestionForms(QuestionForm[] questionForms) {
-		this.questionForms = questionForms;
+	public List<Question> getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
 	}
 
 	public String getDate() {
@@ -57,19 +67,13 @@ public class QuestionsForm extends Form {
 		this.date = date;
 	}
 
-	public static class QuestionForm extends Form {
-		@Validation(name = "question", validator = QuestionValidator.class)
+	public static class Question {
 		private String question;
 		private String type;
-		@Validation(name = "option", validator = TextValidator.class)
-		private String[] options;
-		@Validation(name = "points", validator = PositiveNumberValidator.class)
+		private Set<String> options;
 		private int points;
 
-		public QuestionForm() {
-		}
-
-		public QuestionForm(String question, String type, String[] options, int points) {
+		public Question(String question, String type, Set<String> options, int points) {
 			this.question = question;
 			this.type = type;
 			this.options = options;
@@ -84,26 +88,12 @@ public class QuestionsForm extends Form {
 			return type;
 		}
 
-		public String[] getOptions() {
+		public Set<String> getOptions() {
 			return options;
 		}
 
 		public int getPoints() {
 			return points;
-		}
-
-		@Override
-		public Form populate(JsonElement data) {
-			Set<String> options = new HashSet<>();
-			for (JsonElement option : data.getAsJsonObject().getAsJsonArray("options")) {
-				options.add(option.getAsString());
-			}
-			return new QuestionForm(
-					data.getAsJsonObject().get("question").getAsString(),
-					data.getAsJsonObject().get("type").getAsString(),
-					options.stream().toArray(String[]::new),
-					data.getAsJsonObject().get("points").getAsInt()
-			);
 		}
 	}
 }

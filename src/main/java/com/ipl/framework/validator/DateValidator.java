@@ -1,16 +1,33 @@
 package com.ipl.framework.validator;
 
-public class DateValidator extends RegexValidator {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
-	private static final String PATTERN =
-			"^[0-9]{4}-(((0[13578]|(10|12))-(0[1-9]|[1-2][0-9]|3[0-1]))|(02-(0[1-9]|[1-2][0-9]))|((0[469]|11)-(0[1-9]|[1-2][0-9]|30)))$";
-	private static final DateValidator INSTANCE = new DateValidator(PATTERN);
+public class DateValidator implements Validator<String> {
 
-	private DateValidator(String regex) {
-		super(regex);
+	private SimpleDateFormat format;
+
+	public DateValidator(String pattern) {
+		this.format = new SimpleDateFormat(pattern);
 	}
 
-	public static DateValidator getInstance() {
-		return INSTANCE;
+	public SimpleDateFormat getFormat() {
+		return format;
+	}
+
+	public DateValidator setFormat(SimpleDateFormat format) {
+		this.format = format;
+		return this;
+	}
+
+	@Override
+	public boolean validate(String date) {
+		try {
+			format.parse(date);
+			return true;
+		}
+		catch(ParseException e){
+			return false;
+		}
 	}
 }

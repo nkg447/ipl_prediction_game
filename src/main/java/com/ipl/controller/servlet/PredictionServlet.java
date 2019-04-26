@@ -1,6 +1,6 @@
 package com.ipl.controller.servlet;
 
-import com.ipl.form.PredictionsForm;
+import com.ipl.form.PredictionForm;
 import com.ipl.service.PredictService;
 import org.apache.log4j.Logger;
 
@@ -19,7 +19,8 @@ public class PredictionServlet extends HttpServlet {
 		Response responseData = new Response();
 		HttpSession session;
 		if ((session = ServletUtil.sessionAvailable(request, responseData)) != null) {
-			PredictionsForm form = ServletUtil.getForm(request, new PredictionsForm());
+			PredictionForm form = new PredictionForm();
+			ServletUtil.getForm(request, form);
 			try {
 //				form.validate();
 				PredictService.predict(form, (String) session.getAttribute("email"));

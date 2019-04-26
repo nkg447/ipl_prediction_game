@@ -1,6 +1,6 @@
 package com.ipl.framework.validator;
 
-public abstract class RegexValidator implements StringValidator {
+public class RegexValidator implements StringValidator {
 	private String regex;
 
 	public RegexValidator(String regex) {

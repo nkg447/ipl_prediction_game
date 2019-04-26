@@ -1,6 +1,6 @@
 package com.ipl.framework.validator;
 
-public abstract class RangeValidator<T extends Comparable> implements Validator<T> {
+public class RangeValidator<T extends Comparable> implements Validator<T> {
 	private T min;
 	private T max;
 

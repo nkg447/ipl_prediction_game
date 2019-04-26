@@ -15,7 +15,8 @@ public class RegisterServlet extends HttpServlet {
 	final static Logger logger = Logger.getLogger(RegisterServlet.class);
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RegisterForm registerForm = ServletUtil.getForm(request, new RegisterForm());
+		RegisterForm registerForm = new RegisterForm();
+		ServletUtil.getForm(request, registerForm);
 		Response responseData = new Response();
 		JsonObject jsonObject = new JsonObject();
 		try {
