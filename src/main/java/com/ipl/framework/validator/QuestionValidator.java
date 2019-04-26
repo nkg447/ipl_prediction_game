@@ -1,5 +1,5 @@
 package com.ipl.framework.validator;
-//moved outside framwork
+
 public class QuestionValidator extends RegexValidator {
 
 	private static final String PATTERN = "([a-zA-Z]+)(.*)(\\?)";

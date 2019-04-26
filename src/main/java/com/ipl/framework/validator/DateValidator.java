@@ -1,7 +1,5 @@
 package com.ipl.framework.validator;
 
-//yyyy-mm-dd
-//pattern as arg
 public class DateValidator extends RegexValidator {
 
 	private static final String PATTERN =
