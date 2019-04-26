@@ -24,7 +24,7 @@ public class LeaderboardServlet extends HttpServlet {
 			List<Predictor> predictors = PredictorDAO.getAllPredictors();
 
 			predictors.stream()
-					.sorted(Comparator.comparingInt(Predictor::getScore))
+					.sorted(Comparator.comparingInt(Predictor::getScore).reversed())
 					.forEach(predictor -> {
 						JsonObject object = new JsonObject();
 						object.addProperty("name", predictor.getName());

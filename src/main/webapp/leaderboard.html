@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="styles/index.css" />
+  </head>
+  <body onload="fetchLeaderBoard()">
+    <div class="form">
+      <div class="logo">
+        <img src="/assets/logo.png" />
+      </div>
+      <h3>Leaderboard</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Serial</th>
+            <th>Name</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard">
+        </tbody>
+      </table>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="scripts/leaderboard.js"></script>
+  </body>
+</html>
